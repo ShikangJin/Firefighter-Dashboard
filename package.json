@@ -52,6 +52,7 @@
   ],
   "dependencies": {
     "@antv/data-set": "^0.10.1",
+    "@react-google-maps/api": "^1.2.3",
     "antd": "^3.16.1",
     "bizcharts": "^3.5.3-beta.0",
     "bizcharts-plugin-slider": "^2.1.1-beta.1",

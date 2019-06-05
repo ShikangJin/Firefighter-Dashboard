@@ -98,21 +98,6 @@ models: () => [
         "icon": "dashboard",
         "routes": [
           {
-            "path": "/dashboard/squadfinder",
-            "name": "Squad Search",
-            "component": _dvaDynamic({
-  app: require('@tmp/dva').getApp(),
-models: () => [
-  import(/* webpackChunkName: 'p__Dashboard__models__activities.js' */'/Users/skjin/firefighter-dashboard/src/pages/Dashboard/models/activities.js').then(m => { return { namespace: 'activities',...m.default}}),
-  import(/* webpackChunkName: 'p__Dashboard__models__chart.js' */'/Users/skjin/firefighter-dashboard/src/pages/Dashboard/models/chart.js').then(m => { return { namespace: 'chart',...m.default}}),
-  import(/* webpackChunkName: 'p__Dashboard__models__monitor.js' */'/Users/skjin/firefighter-dashboard/src/pages/Dashboard/models/monitor.js').then(m => { return { namespace: 'monitor',...m.default}})
-],
-  component: () => import(/* webpackChunkName: "p__Dashboard__SquadFinder" */'../Dashboard/SquadFinder'),
-  LoadingComponent: require('/Users/skjin/firefighter-dashboard/src/components/PageLoading/index').default,
-}),
-            "exact": true
-          },
-          {
             "path": "/dashboard/map",
             "name": "Map",
             "component": _dvaDynamic({
@@ -120,6 +105,7 @@ models: () => [
 models: () => [
   import(/* webpackChunkName: 'p__Dashboard__models__activities.js' */'/Users/skjin/firefighter-dashboard/src/pages/Dashboard/models/activities.js').then(m => { return { namespace: 'activities',...m.default}}),
   import(/* webpackChunkName: 'p__Dashboard__models__chart.js' */'/Users/skjin/firefighter-dashboard/src/pages/Dashboard/models/chart.js').then(m => { return { namespace: 'chart',...m.default}}),
+  import(/* webpackChunkName: 'p__Dashboard__models__information.js' */'/Users/skjin/firefighter-dashboard/src/pages/Dashboard/models/information.js').then(m => { return { namespace: 'information',...m.default}}),
   import(/* webpackChunkName: 'p__Dashboard__models__monitor.js' */'/Users/skjin/firefighter-dashboard/src/pages/Dashboard/models/monitor.js').then(m => { return { namespace: 'monitor',...m.default}})
 ],
   component: () => import(/* webpackChunkName: "p__Dashboard__Map" */'../Dashboard/Map'),
@@ -135,6 +121,7 @@ models: () => [
 models: () => [
   import(/* webpackChunkName: 'p__Dashboard__models__activities.js' */'/Users/skjin/firefighter-dashboard/src/pages/Dashboard/models/activities.js').then(m => { return { namespace: 'activities',...m.default}}),
   import(/* webpackChunkName: 'p__Dashboard__models__chart.js' */'/Users/skjin/firefighter-dashboard/src/pages/Dashboard/models/chart.js').then(m => { return { namespace: 'chart',...m.default}}),
+  import(/* webpackChunkName: 'p__Dashboard__models__information.js' */'/Users/skjin/firefighter-dashboard/src/pages/Dashboard/models/information.js').then(m => { return { namespace: 'information',...m.default}}),
   import(/* webpackChunkName: 'p__Dashboard__models__monitor.js' */'/Users/skjin/firefighter-dashboard/src/pages/Dashboard/models/monitor.js').then(m => { return { namespace: 'monitor',...m.default}})
 ],
   component: () => import(/* webpackChunkName: "p__Dashboard__Analysis" */'../Dashboard/Analysis'),
@@ -150,6 +137,7 @@ models: () => [
 models: () => [
   import(/* webpackChunkName: 'p__Dashboard__models__activities.js' */'/Users/skjin/firefighter-dashboard/src/pages/Dashboard/models/activities.js').then(m => { return { namespace: 'activities',...m.default}}),
   import(/* webpackChunkName: 'p__Dashboard__models__chart.js' */'/Users/skjin/firefighter-dashboard/src/pages/Dashboard/models/chart.js').then(m => { return { namespace: 'chart',...m.default}}),
+  import(/* webpackChunkName: 'p__Dashboard__models__information.js' */'/Users/skjin/firefighter-dashboard/src/pages/Dashboard/models/information.js').then(m => { return { namespace: 'information',...m.default}}),
   import(/* webpackChunkName: 'p__Dashboard__models__monitor.js' */'/Users/skjin/firefighter-dashboard/src/pages/Dashboard/models/monitor.js').then(m => { return { namespace: 'monitor',...m.default}})
 ],
   component: () => import(/* webpackChunkName: "p__Dashboard__Monitor" */'../Dashboard/Monitor'),
@@ -165,6 +153,7 @@ models: () => [
 models: () => [
   import(/* webpackChunkName: 'p__Dashboard__models__activities.js' */'/Users/skjin/firefighter-dashboard/src/pages/Dashboard/models/activities.js').then(m => { return { namespace: 'activities',...m.default}}),
   import(/* webpackChunkName: 'p__Dashboard__models__chart.js' */'/Users/skjin/firefighter-dashboard/src/pages/Dashboard/models/chart.js').then(m => { return { namespace: 'chart',...m.default}}),
+  import(/* webpackChunkName: 'p__Dashboard__models__information.js' */'/Users/skjin/firefighter-dashboard/src/pages/Dashboard/models/information.js').then(m => { return { namespace: 'information',...m.default}}),
   import(/* webpackChunkName: 'p__Dashboard__models__monitor.js' */'/Users/skjin/firefighter-dashboard/src/pages/Dashboard/models/monitor.js').then(m => { return { namespace: 'monitor',...m.default}})
 ],
   component: () => import(/* webpackChunkName: "p__Dashboard__Workplace" */'../Dashboard/Workplace'),

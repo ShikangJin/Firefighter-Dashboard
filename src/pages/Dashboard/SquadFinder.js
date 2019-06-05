@@ -40,7 +40,7 @@ class SquadFinder extends React.Component {
                     </Row>
                     <Row style={{'marginTop': '30px'}}>
                         <Suspense fallback={null}>
-                            <MemberTable />
+                            <MemberTable nameClick={this.props.nameClick} data={this.props.data}/>
                         </Suspense>
                         
                     </Row>

@@ -30,11 +30,11 @@ export default [
         name: 'dashboard',
         icon: 'dashboard',
         routes: [
-          {
-            path: '/dashboard/squadfinder',
-            name: 'Squad Search',
-            component: './Dashboard/SquadFinder',
-          },
+          // {
+          //   path: '/dashboard/squadfinder',
+          //   name: 'Squad Search',
+          //   component: './Dashboard/SquadFinder',
+          // },
           {
             path: '/dashboard/map',
             name: 'Map',
