@@ -124,3 +124,20 @@ export async function queryNotices(params = {}) {
 export async function getFakeCaptcha(mobile) {
   return request(`/api/captcha?mobile=${mobile}`);
 }
+
+export async function fakeFirefighterData(params) { 
+  let squads = '';
+  params.squads.forEach((squad, idx) => {
+    squads += squad;
+    if (idx < params.squads.length - 1) {
+      squads += '+';
+    }
+  });
+  console.log(squads);
+  // the + between squads will be removed when server get this param
+  return request(`/firefighter/data?squads=${squads}`);
+}
+
+export async function fakeHistoryData(params) {
+  return request(`/firefighter/history?id=${params}`);
+}

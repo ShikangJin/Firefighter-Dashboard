@@ -1,19 +1,6 @@
 import React from 'react';
 import { Table, Divider, Tag, Modal } from 'antd';
 
-function showInfo(info) {
-    Modal.info({
-        title: info.name,
-        content: (
-          <div>
-            <p>{'Age: ' + info.age}</p>
-            <p>{'Body Temperature: ' + info.bodyTemp}</p>
-          </div>
-        ),
-        onOk() {},
-    });
-};
-
 var columns = [];
 
 class MemberTable extends React.Component {

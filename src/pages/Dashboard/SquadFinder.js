@@ -11,11 +11,6 @@ for (let i = 0; i < 10; i++) {
 const MemberTable = React.lazy(() => import('./MemberTable.js'));
 class SquadFinder extends React.Component {
 
-    handleChange(value) {
-        // dispatch here to get new state with members info in squads
-        console.log(`Selected: ${value}`);
-    }
-
     render() {
         return (
             <div>
@@ -25,7 +20,7 @@ class SquadFinder extends React.Component {
                                 mode="tags"
                                 size="default"
                                 placeholder="Please select squads"
-                                onChange={this.handleChange}
+                                onChange={value => this.props.fetchData(value)}
                                 style={{width: '100%'}}
                             >
                                 {squads}
@@ -33,7 +28,7 @@ class SquadFinder extends React.Component {
                     </Row>
                     <Row style={{'marginTop': '15px'}}>
                         <Search placeholder="input search text" 
-                                    onSearch={value => console.log(value)} 
+                                    onSearch={value => this.props.nameSearch(value)} 
                                     enterButton
                                     style={{'width': '300px'}}
                          />
