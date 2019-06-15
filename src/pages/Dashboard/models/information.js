@@ -9,7 +9,10 @@ export default {
         visible: false, 
         childrenDrawer: false ,
         curIdx: -1,
+        curSquads: [],
+        curName: '',
         data: [],
+        wholeData: [],
         filteredData: [],
         center: {
             lat: -3.745,
@@ -17,6 +20,8 @@ export default {
         },
         showInfo: -1,
         curHistoryData: [],
+        intervalId: null,
+        socket: null,
     },
 
     effects: {
@@ -41,7 +46,7 @@ export default {
         },
 
         *openChildDrawer(payload, { call, put }) {
-            const response = yield call(fakeHistoryData, payload.curIdx);
+            const response = yield call(fakeHistoryData, payload);
             yield put({
                 type: 'setDrawer',
                 payload: {
@@ -69,18 +74,29 @@ export default {
         },
 
         *getData(payload, { call, put }) {
-            const response = yield call(fakeFirefighterData, payload);
+            // const response = yield call(fakeFirefighterData, payload);
             yield put({
                 type: 'setData',
                 payload: {
-                    response: response,
-                    location: response.length > 0 ? {
-                        lat: parseFloat(response[0].location.lat),
-                        lng: parseFloat(response[0].location.lng)
-                    } : {
-                        lat: -3.745,
-                        lng: -38.523
-                    }
+                    wholeData: payload.wholeData,
+                    curSquads: payload.squads,
+                }
+            });
+        },
+
+        *updateData(payload, { call, put }) {
+            // const response1 = yield call(fakeFirefighterData, payload);
+            const response2 = yield call(fakeHistoryData, payload);
+            console.log(payload);
+            yield put({
+                type: 'setNewData',
+                payload: {
+                    wholeData: payload.data,
+                    // response: response1,
+                    curSquads: payload.curSquads,
+                    curHistoryData: response2,
+                    curName: payload.curName,
+                    socket: payload.socket,
                 }
             });
         },
@@ -94,6 +110,7 @@ export default {
                 yield put({
                     type: 'setFilter',
                     filteredData: data,
+                    curName: name,
                 });
                 return;
             }
@@ -113,8 +130,23 @@ export default {
             yield put({
                 type: 'setFilter',
                 filteredData: result,
+                curName: name,
             });
         },
+        
+        *setInterval(payload, { _, put }) {
+            yield put({
+                type: 'startInterval',
+                intervalId: payload.intervalId,
+            });
+        },
+
+        // *setSocket(payload, { _, put }) {
+        //     yield put({
+        //         type: 'socket',
+        //         socket: payload.socket,
+        //     });
+        // },
 
         *clear(_, { call, put }) {
             yield put({
@@ -140,19 +172,88 @@ export default {
 
         setData(state, action) {
             // TODO: 在这里update前缀dict
-            
+            const { wholeData, curSquads } = action.payload;
+            let curData = [];
+            curSquads.forEach(squad => {
+                if (squad === undefined) return;
+                console.log(parseInt(squad[5]));
+                curData.push(...wholeData[parseInt(squad[5])]);
+            });
+            console.log(curData);
             return {
                 ...state,
-                data: action.payload.response,
-                filteredData: action.payload.response,
-                center: action.payload.location
+                data: curData,
+                filteredData: curData,
+                center: curData.length > 0 ? {
+                    lat: parseFloat(curData[0].location.lat),
+                    lng: parseFloat(curData[0].location.lng)
+                } : {
+                    lat: -3.745,
+                    lng: -38.523
+                },
+                curSquads: action.payload.curSquads,
             };
         },
+
+        setNewData(state, action) {
+            const { wholeData, curSquads, curHistoryData, curName, socket } = action.payload;
+            console.log(curSquads);
+            let curData = [];
+            curSquads.forEach(squad => {
+                if (squad === undefined) return;
+                console.log(parseInt(squad[5]));
+                curData.push(...wholeData[parseInt(squad[5])]);
+            });
+            if (curName.length === 0) {
+                return {
+                    ...state,
+                    wholeData: wholeData,
+                    data: curData,
+                    filteredData: curData,
+                    curHistoryData: curHistoryData,
+                }
+            }
+            let result = [];
+            curData.forEach(member => {
+                let i = 0;
+                while (i < member.name.length && i < curName.length) {
+                    if (member.name[i] !== curName[i]) {
+                        break;
+                    }
+                    i++;
+                }
+                if (i === curName.length) {
+                    result.push(member);
+                }
+            });
+            return {
+                ...state,
+                wholeData: wholeData,
+                data: curData,
+                filteredData: result,
+                curHistoryData: curHistoryData,
+            }
+        },
+
+        // socket(state, action) {
+        //     return {
+        //         ...state,
+        //         socket: action.socket,
+        //     }
+        // },
 
         setFilter(state, action) {
             return {
                 ...state,
                 filteredData: action.filteredData,
+                curName: action.curName,
+            }
+        },
+
+        startInterval(state, action) {
+            return {
+                ...state,
+                intervalId: action.intervalId,
             }
         },
 
@@ -161,7 +262,10 @@ export default {
                 visible: false, 
                 childrenDrawer: false ,
                 curIdx: -1,
+                curSquads: [],
+                curName: '',
                 data: [],
+                // wholeData: [],
                 filteredData: [],
                 center: {
                     lat: -3.745,
@@ -169,6 +273,7 @@ export default {
                 },
                 showInfo: -1,
                 curHistoryData: [],
+                intervalId: null,
             }
         }
     },

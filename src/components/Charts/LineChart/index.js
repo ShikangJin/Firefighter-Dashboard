@@ -4,8 +4,30 @@ import autoHeight from '../autoHeight';
 import DataSet from '@antv/data-set';
 const { DataView } = DataSet;
 
+const animate = {
+  update: {
+    animation: 'fadeIn', // 动画名称
+    // easing: 'easeQuadIn', // 动画缓动效果
+    delay: 200, // 动画延迟执行时间
+    duration: 3000, // 动画执行时间
+  },
+  enter: {
+    animation: 'fadeIn', // 动画名称
+    // easing: 'easeQuadIn', // 动画缓动效果
+    delay: 200, // 动画延迟执行时间
+    duration: 3000 // 动画执行时间
+  },
+  appear:{
+    animation: 'fadeIn', // 动画名称
+    // easing: 'easeQuadIn', // 动画缓动效果
+    delay: 200, // 动画延迟执行时间
+    duration: 3000 // 动画执行时间
+  },
+  
+};
 @autoHeight()
 export default class LineChart extends Component {
+
   render() {
     const { 
         data, 
@@ -63,13 +85,13 @@ export default class LineChart extends Component {
     return (
       <div style={{ height }}>
           {height > 0 && 
-            (<Chart height={height} data={data} scale={scaleProps} padding='auto'>
-                {/* <Axis name={axis[0]} title={xtitle} tickLine={null} line={line} label={null}/> */}
-                {/* <Axis name={axis[1]} title={ytitle} tickLine={null} line={line} label={null}/> */}
+            (<Chart height={height} data={data} scale={scaleProps} padding='auto' >
+                {/* <Axis name='x' />
+                <Axis name='y' /> */}
                 <Tooltip/>
-                <Geom type="line" position={position} size={2} color={color}/>
+                <Geom type="line" position={position} size={2} color={color} animate={animate}/>
                 <Geom type='point' position={position} size={1} shape={'circle'}
-                color={color} style={{ stroke: color, lineWidth: 2}}>
+                color={color} style={{ stroke: color, lineWidth: 2}} animate={animate}>
                 </Geom>
             </Chart>)
           }

@@ -1,10 +1,14 @@
 import React from 'react';
-import { Button } from 'antd';
+import { Button, Tag, Card } from 'antd';
 import { GoogleMap, LoadScript, DrawingManager, Marker, InfoWindow } from '@react-google-maps/api';
+import Pic from '@/assets/demoPic.jpg';
+import mapAuth from '@/assets/mapKey.json';
 
 const libs = ['drawing'];
 const fillColor = '#ba2727';
 var selectedPoly = null;
+
+const { Meta } = Card;
 
 function selectNewPoly(poly) {
     if (selectedPoly !== null) {
@@ -69,9 +73,18 @@ export default class MapComponent extends React.Component {
                                 console.log('unmount')
                             }
                         >
-                            <div>
-                                {member.name} Information
-                            </div>
+                            {/* cover={<img alt="example" src={Pic} />} */}
+                            <Card hoverable >
+                                <Meta title={member.name} description={ 
+                                <div>
+                                    <span>{'Body Temperature: ' + member.bodyTemp}</span><br/>
+                                    <span>{'Heart Rate: ' + (member.heartRate)}</span><br/>
+                                    <span>{'CO Level: ' + (member.coLevel * 100).toFixed(2) + '%'}</span><br/>
+                                    <span>{'Air Quality: ' + (member.airQuality)}</span><br/> 
+                                    <span>{'Mission Time: ' + (member.missionTime + (member.missionTime <= 1 ? ' min' : ' mins'))}</span><br/>
+                                </div>}/>
+                               
+                            </Card>
                         </InfoWindow>
                    }
                 </Marker>
@@ -86,7 +99,7 @@ export default class MapComponent extends React.Component {
             <LoadScript
                 id="script-loader"
                 libraries={libs}
-                // googleMapsApiKey="Your Key"
+                // googleMapsApiKey={mapAuth.key}
             >
                 <GoogleMap
                     id='example-map'
@@ -99,9 +112,8 @@ export default class MapComponent extends React.Component {
                     clickableIcons={false}
                 >
                     <DrawingManager
-                        onLoad={drawingManager => {
-                        console.log(drawingManager)
-                        }}
+                        // onLoad={drawingManager => {
+                        // }}
                         onPolygonComplete={(polygon) => {
                             selectNewPoly(polygon);
                             window.google.maps.event.addListener(polygon, 'click', 
@@ -154,6 +166,9 @@ export default class MapComponent extends React.Component {
                     <Button onClick={deletePoly}>
                         Delete
                     </Button>
+                    <Tag color="#108ee9" style={{'width': '150px', 'margin': '5px', 'padding': '0 5px', 'zIndex': 10, 'position': 'absolute', 'bottom': '55px', 'left': '0px'}}>
+                        Fire Boundary & Markers
+                    </Tag>
                     {this.loadMarkers(information)}
                 </GoogleMap> 
             </LoadScript>
