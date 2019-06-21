@@ -125,25 +125,21 @@ export async function getFakeCaptcha(mobile) {
   return request(`/api/captcha?mobile=${mobile}`);
 }
 
-// export async function fakeFirefighterData(params) { 
-//   if (params.squads.length === 0) {
-//     return [];
-//   }
-//   let squads = '';
-//   params.squads.forEach((squad, idx) => {
-//     squads += squad;
-//     if (idx < params.squads.length - 1) {
-//       squads += '+';
-//     }
-//   });
-  
-//   // the + between squads will be removed when server get this param
-//   return request(`/realServer/firefighter/data?squads=${squads}`);
-// }
-
-export async function fakeHistoryData(params) {
-  if (params.curIdx === -1) {
+export async function fakeHistoryData(id) {
+  if (id === -1) {
     return [];
   }
-  return request(`/realServer/firefighter/history?id=${params.curIdx}`);
+  return request(`/realServer/firefighter/history?id=${id}`);
+}
+
+export async function addNewMember(params) {
+  request(`/realServer/addMember`, {
+    method: 'POST',
+    data: {
+      "age": params.age,
+      "name": params.name,
+      "squad": params.squad,
+      "pic": params.pic,
+    },
+  });
 }

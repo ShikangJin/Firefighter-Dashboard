@@ -6,7 +6,9 @@ import { select } from 'd3-selection';
 import PageLoading from '@/components/PageLoading';
 import { MiniArea, LineChart } from '@/components/Charts';
 import  MapComponent  from '@/components/MapComponent';
+import AddForm from './AddForm';
 import openSocket from 'socket.io-client';
+import pic from '@/assets/demoPic.jpg';
 var socket;
 
 @connect(({ information }) => ({
@@ -16,69 +18,72 @@ class Map extends React.Component {
 
     componentDidMount() {   
         const { dispatch } = this.props;
-        socket = openSocket('http://localhost:3000/',{'forceNew':true })
-        window.onbeforeunload = function(event) {
-            socket.disconnect(true);
-            dispatch({
-                type: 'information/clear',
-            });
-        }
+        socket = openSocket('http://localhost:3000/', { 'forceNew': true })
+        // don't need to call disconnect when refreshing page since it will auto trigger disconnect
+        window.onbeforeunload = dispatch({ type: 'information/clear' });
         socket.on('update', function(data) {
             console.log(data);
             const { dispatch, information } = this.props;
+            console.log(information);
+            const { curSquads, curName, curIdx, filteredData } = information;
             dispatch({
                 type: 'information/updateData',
-                curIdx: information.curIdx,
-                curSquads: information.curSquads,
-                curName: information.curName,
+                curIdx: curIdx,
+                curSquads: curSquads,
+                curName: curName,
                 data: data,
+                id: filteredData[curIdx] ? filteredData[curIdx].id : -1,
             });
         }.bind(this));
     }
 
     componentWillUnmount() {
         const { dispatch } = this.props;
+        // must call disconnect here to remove callback function at server side 
         socket.disconnect(true);
-        dispatch({
-            type: 'information/clear',
-        });
+        dispatch({ type: 'information/clear' });
     }
 
-    fetchData(squads) {
+    fetchData(curSquads) {
         const { dispatch, information } = this.props;  
         dispatch({
             type: 'information/getData',
-            squads: squads, //['Squad1', 'Squad2']
+            curSquads: curSquads,
             wholeData: information.wholeData,
         });
     }
 
-    showDrawer = () => {
+    setDrawer = (status) => {
         const { dispatch } = this.props;  
         dispatch({
-            type: 'information/openDrawer',
-        });
-    };
-    
-    onClose = () => {
-        const { dispatch } = this.props;  
-        dispatch({
-            type: 'information/closeDrawer',
+            type: 'information/drawer',
+            visible: status,
         });
     };
 
-    showChildrenDrawer = (index) => {
+    setFormDrawer = (status) => {
+        const { dispatch } = this.props;
+        dispatch({
+            type: 'information/drawer',
+            formDrawer: status,
+        });
+    };
+
+    openChildDrawer = (index) => {
         const { dispatch, information } = this.props;  
         dispatch({
-            type: 'information/openChildDrawer',
+            type: 'information/childDrawer',
             curIdx: index,
+            id: information.filteredData[index].id,
+            childDrawer: true,
         });
     };
     
-    onChildrenDrawerClose = () => {
+    closeChildDrawer = () => {
         const { dispatch } = this.props;  
         dispatch({
-            type: 'information/closeChildDrawer',
+            type: 'information/childDrawer',
+            childDrawer: false,
         });
     };
 
@@ -110,54 +115,65 @@ class Map extends React.Component {
                 y: parseFloat(yData),
             });
         })
+        
         return result;
     }
 
     render() {
         const { information } = this.props;
-        const { data, filteredData, curIdx } = information;
+        const { data, filteredData, curIdx, wholeData } = information;
         console.log(information);
-        console.log(this.parseData('bodyTemp'));
         return (
             <div>                
                 <Drawer
                     title="Squad Searching Panel"
                     width={520}
                     closable={false}
-                    onClose={this.onClose}
+                    onClose={() => this.setDrawer(false)}
                     visible={information.visible}
                 >
-                    <SquadFinder nameClick={this.showChildrenDrawer.bind(this)} 
+                    <SquadFinder nameClick={this.openChildDrawer.bind(this)} 
                                 data={filteredData}
                                 fetchData={this.fetchData.bind(this)}
                                 nameSearch={this.nameSearch.bind(this)}
+                                squads={wholeData === undefined ? [] : Object.keys(wholeData)}
                     />
+                    <Button type="primary" onClick={() => this.setFormDrawer(true)} style={{'marginTop': 12}}>
+                        Add Member
+                    </Button>
                     <Drawer
                         title="Member Information"
                         width={320}
                         closable={false}
-                        onClose={this.onChildrenDrawerClose}
-                        visible={information.childrenDrawer}
+                        onClose={this.closeChildDrawer}
+                        visible={information.childDrawer}
                     >
                         <Card hoverable={true}
                               title={'Basic Information'}
                               style={{'marginBottom': 12}}
                         >
+                            <img src={filteredData[curIdx] === undefined ? '' : filteredData[curIdx].image} alt="pic" style={{'width': 160, 'marginLeft': '50%', 'marginBottom': 14, 'left': -80, 'position': 'relative'}}/>
                             <p>{'Name: ' + (filteredData[curIdx] === undefined ? '' : filteredData[curIdx].name)}</p>
                             <p>{'Age: ' + (filteredData[curIdx] === undefined ? 0 : filteredData[curIdx].age)}</p>
-                            <p>{'Body Temperature: ' + (filteredData[curIdx] === undefined ? 0 : filteredData[curIdx].bodyTemp)}</p>
+                        </Card>
+                        
+                        <Card hoverable={true}
+                              title={'Real-Time Data'}
+                              style={{'marginBottom': 12}}>
+                            <p>{'Body Temperature: ' + (filteredData[curIdx] === undefined ? 0 : filteredData[curIdx].bodyTemp)}</p>    
                             <p>{'Heart Rate: ' + (filteredData[curIdx] === undefined ? 0 : filteredData[curIdx].heartRate)}</p>
                             <p>{'CO Level: ' + (filteredData[curIdx] === undefined ? '0%' : ((filteredData[curIdx].coLevel * 100).toFixed(2) + '%'))}</p>
                             <p>{'Mission Time: ' + (filteredData[curIdx] === undefined ? '0 min' : filteredData[curIdx].missionTime + (filteredData[curIdx].missionTime <= 1 ? ' min' : ' mins'))}</p>
                             <p>{'Air Quality: ' + (filteredData[curIdx] === undefined ? 0 : filteredData[curIdx].airQuality)}</p>
                         </Card>
+
                         <Card hoverable={true}
                               title={'GPS'}
                               style={{'marginBottom': 12}}
                         >
                             <p>{'Time: ' + (filteredData[curIdx] === undefined ? '' : (filteredData[curIdx].timestamp) + ' ' + (filteredData[curIdx].timeDetail))}</p>
-                            <p>{'Current Latitude: ' + (filteredData[curIdx] === undefined ? 0 : filteredData[curIdx].location.lat)}</p>
-                            <p>{'Current Longitude: ' + (filteredData[curIdx] === undefined ? 0 : filteredData[curIdx].location.lng)}</p>
+                            <p>{'Current Latitude: ' + ((filteredData[curIdx] === undefined || filteredData[curIdx].location === undefined) ? 0 : filteredData[curIdx].location.lat)}</p>
+                            <p>{'Current Longitude: ' + ((filteredData[curIdx] === undefined || filteredData[curIdx].location === undefined) ? 0 : filteredData[curIdx].location.lng)}</p>
                         </Card>
                         <Card hoverable={true}
                               title={'History Body Temperature'}
@@ -180,10 +196,20 @@ class Map extends React.Component {
                             />
                         </Card>
                     </Drawer>
+
+                    <Drawer
+                        title="Add Member"
+                        width={320}
+                        closable={false}
+                        onClose={() => this.setFormDrawer(false)}
+                        visible={information.formDrawer}
+                    >
+                        <AddForm />
+                    </Drawer>
                 </Drawer>
                 
                 <MapComponent information={information} 
-                              showDrawer={this.showDrawer.bind(this)}
+                              setDrawer={this.setDrawer.bind(this)}
                 />
 
             </div>

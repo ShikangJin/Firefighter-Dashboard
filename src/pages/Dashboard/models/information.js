@@ -1,4 +1,4 @@
-import { fakeFirefighterData, fakeHistoryData } from '@/services/api';
+import { fakeFirefighterData, fakeHistoryData, addNewMember } from '@/services/api';
 
 // var prefixDict = {};
 
@@ -7,94 +7,67 @@ export default {
 
     state: {
         visible: false, 
-        childrenDrawer: false ,
+        childDrawer: false ,
+        formDrawer: false,
         curIdx: -1,
         curSquads: [],
         curName: '',
         data: [],
-        wholeData: [],
+        wholeData: {},
         filteredData: [],
         center: {
             lat: -3.745,
             lng: -38.523
         },
-        showInfo: -1,
         curHistoryData: [],
-        intervalId: null,
-        socket: null,
     },
 
     effects: {
-        *openDrawer(_, { call, put }) {
-            // const response = yield call(queryTags);
+        *drawer(payload, { call, put }) {
             yield put({
                 type: 'setDrawer',
-                payload: {
-                    visible: true,
-                },
+                payload: { ...payload },
             });
         },
 
-        *closeDrawer(_, { call, put }) {
-            // const response = yield call(queryTags);
+        *childDrawer(payload, { call, put }) {
+            const { childDrawer, curIdx, id } = payload;
+            if (!childDrawer) {
+                yield put({
+                    type: 'setDrawer',
+                    payload: {
+                        childDrawer: childDrawer,
+                    },   
+                });
+                return;
+            }
+            const response = yield call(fakeHistoryData, id);
             yield put({
                 type: 'setDrawer',
                 payload: {
-                    visible: false,
-                },
-            });
-        },
-
-        *openChildDrawer(payload, { call, put }) {
-            const response = yield call(fakeHistoryData, payload);
-            yield put({
-                type: 'setDrawer',
-                payload: {
-                    childrenDrawer: true,
-                    curIdx: payload.curIdx,
+                    childDrawer: childDrawer,
+                    curIdx: curIdx,
                     curHistoryData: response,
                 },
             });
         },
 
-        *closeChildDrawer(_, { call, put }) {
-            yield put({
-                type: 'setDrawer',
-                payload: {
-                    childrenDrawer: false,
-                }   
-            });
-        },
-
-        *setInfoWindow(payload, { _, put }) {
-            yield put({
-                type: 'setInfo',
-                idx: payload.idx,
-            });
-        },
-
         *getData(payload, { call, put }) {
-            // const response = yield call(fakeFirefighterData, payload);
             yield put({
                 type: 'setData',
-                payload: {
-                    wholeData: payload.wholeData,
-                    curSquads: payload.squads,
-                }
+                payload: { ...payload },
             });
         },
 
         *updateData(payload, { call, put }) {
-            // const response1 = yield call(fakeFirefighterData, payload);
-            const response2 = yield call(fakeHistoryData, payload);
+            const response = yield call(fakeHistoryData, payload.id);
             console.log(payload);
             yield put({
                 type: 'setNewData',
                 payload: {
                     wholeData: payload.data,
-                    // response: response1,
                     curSquads: payload.curSquads,
-                    curHistoryData: response2,
+                    curHistoryData: response,
                     curName: payload.curName,
                     socket: payload.socket,
                 }
@@ -141,12 +114,9 @@ export default {
             });
         },
 
-        // *setSocket(payload, { _, put }) {
-        //     yield put({
-        //         type: 'socket',
-        //         socket: payload.socket,
-        //     });
-        // },
+        *addMember(payload, { call, _ }) {
+            yield call(addNewMember, payload);
+        },
 
         *clear(_, { call, put }) {
             yield put({
@@ -163,21 +133,15 @@ export default {
             };
         },
 
-        setInfo(state, action) {
-            return {
-                ...state,
-                showInfo: action.idx,
-            }
-        },
-
         setData(state, action) {
             // TODO: 在这里update前缀dict
             const { wholeData, curSquads } = action.payload;
             let curData = [];
             curSquads.forEach(squad => {
                 if (squad === undefined) return;
-                console.log(parseInt(squad[5]));
-                curData.push(...wholeData[parseInt(squad[5])]);
+                Object.keys(wholeData[squad]).forEach(id => {
+                    curData.push(wholeData[squad][id]);
+                });
             });
             console.log(curData);
             return {
@@ -197,12 +161,12 @@ export default {
 
         setNewData(state, action) {
             const { wholeData, curSquads, curHistoryData, curName, socket } = action.payload;
-            console.log(curSquads);
             let curData = [];
             curSquads.forEach(squad => {
                 if (squad === undefined) return;
-                console.log(parseInt(squad[5]));
-                curData.push(...wholeData[parseInt(squad[5])]);
+                Object.keys(wholeData[squad]).forEach(id => {
+                    curData.push(wholeData[squad][id]);
+                });
             });
             if (curName.length === 0) {
                 return {
@@ -235,13 +199,6 @@ export default {
             }
         },
 
-        // socket(state, action) {
-        //     return {
-        //         ...state,
-        //         socket: action.socket,
-        //     }
-        // },
-
         setFilter(state, action) {
             return {
                 ...state,
@@ -250,30 +207,23 @@ export default {
             }
         },
 
-        startInterval(state, action) {
+        clearData(state) {
+            console.log('clean');
             return {
                 ...state,
-                intervalId: action.intervalId,
-            }
-        },
-
-        clearData() {
-            return {
                 visible: false, 
-                childrenDrawer: false ,
+                childDrawer: false,
+                formDrawer: false,
                 curIdx: -1,
                 curSquads: [],
                 curName: '',
                 data: [],
-                // wholeData: [],
                 filteredData: [],
                 center: {
                     lat: -3.745,
                     lng: -38.523
                 },
-                showInfo: -1,
                 curHistoryData: [],
-                intervalId: null,
             }
         }
     },
