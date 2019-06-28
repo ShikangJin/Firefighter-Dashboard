@@ -108,18 +108,19 @@ class RegistrationForm extends React.Component {
         return (
             <Form {...formItemLayout} onSubmit={this.handleSubmit}>
                 <Form.Item> 
-                    <Upload
-                        name="avatar"
-                        listType="picture-card"
-                        className="avatar-uploader"
-                        showUploadList={false}
-                        action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                        beforeUpload={beforeUpload}
-                        onChange={this.handleChange}
-                        style={{'marginLeft': '50%'}}
-                    >
-                        {imageUrl ? <img src={imageUrl} alt="avatar" style={{'width': 160, 'marginLeft': '50%', 'marginBottom': 14, 'left': -80, 'position': 'relative'}} /> : uploadButton}
-                    </Upload>
+                    <div style={{'marginLeft': '50%'}}>
+                        <Upload
+                            name="avatar"
+                            listType="picture-card"
+                            className="avatar-uploader"
+                            showUploadList={false}
+                            action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                            beforeUpload={beforeUpload}
+                            onChange={this.handleChange} 
+                        >
+                            {imageUrl ? <img src={imageUrl} alt="avatar" style={{'width': 160, 'marginLeft': '50%', 'marginBottom': 14, 'left': -80, 'position': 'relative'}} /> : uploadButton}
+                        </Upload>
+                    </div>
                 </Form.Item>
                 <Form.Item label={<span> Name </span>}>
                     {getFieldDecorator('name', {

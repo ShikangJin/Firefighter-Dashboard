@@ -20,7 +20,7 @@ class Map extends React.Component {
         const { dispatch } = this.props;
         socket = openSocket('http://localhost:3000/', { 'forceNew': true })
         // don't need to call disconnect when refreshing page since it will auto trigger disconnect
-        window.onbeforeunload = dispatch({ type: 'information/clear' });
+        window.onbeforeunload = dispatch({ type: 'information/clear' });  
         socket.on('update', function(data) {
             console.log(data);
             const { dispatch, information } = this.props;
@@ -35,6 +35,10 @@ class Map extends React.Component {
                 id: filteredData[curIdx] ? filteredData[curIdx].id : -1,
             });
         }.bind(this));
+        dispatch({
+            type: 'information/fetchShapeTags'
+        });
+        
     }
 
     componentWillUnmount() {
@@ -114,14 +118,33 @@ class Map extends React.Component {
                 x: data.time,
                 y: parseFloat(yData),
             });
-        })
-        
+        })      
         return result;
+    }
+
+    addShapeTag(tag) {
+        const { dispatch } = this.props;
+        dispatch({
+            type: 'information/addShapeTag',
+            shapeTag: tag,
+        });
+    }
+
+    deleteShapeTag(idx) {
+        console.log(idx);
+        if (idx < 0) {
+            return;
+        }
+        const { dispatch } = this.props;
+        dispatch({
+            type: 'information/deleteShapeTag',
+            idx: idx,
+        });
     }
 
     render() {
         const { information } = this.props;
-        const { data, filteredData, curIdx, wholeData } = information;
+        const { data, filteredData, curIdx, wholeData, firstmarker, shapeTags } = information;
         console.log(information);
         return (
             <div>                
@@ -210,6 +233,10 @@ class Map extends React.Component {
                 
                 <MapComponent information={information} 
                               setDrawer={this.setDrawer.bind(this)}
+                              firstmarker={firstmarker}
+                              tags={shapeTags}
+                              addShapeTag={this.addShapeTag.bind(this)}
+                              deleteShapeTag={this.deleteShapeTag.bind(this)}
                 />
 
             </div>

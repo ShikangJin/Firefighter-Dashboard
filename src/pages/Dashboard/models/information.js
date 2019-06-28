@@ -2,6 +2,8 @@ import { fakeFirefighterData, fakeHistoryData, addNewMember } from '@/services/a
 
 // var prefixDict = {};
 
+const shapeTags = ['Fire Boundray', 'Emergency Area'];
+
 export default {
     namespace: 'information',
 
@@ -19,7 +21,9 @@ export default {
             lat: -3.745,
             lng: -38.523
         },
+        firstmarker: null,
         curHistoryData: [],
+        shapeTags: [],
     },
 
     effects: {
@@ -118,6 +122,26 @@ export default {
             yield call(addNewMember, payload);
         },
 
+        *fetchShapeTags(_, { call, put }) {
+            yield put({
+                type: 'getShapeTags',
+            });
+        },
+
+        *addShapeTag(payload, { _, put }) {
+            yield put({
+                type: 'setShapeTag',
+                shapeTag: payload.shapeTag, 
+            });
+        },
+
+        *deleteShapeTag(payload, {_, put }) {
+            yield put({
+                type: 'removeShapeTag',
+                idx: payload.idx,
+            });
+        },
+
         *clear(_, { call, put }) {
             yield put({
                 type: 'clearData',
@@ -148,13 +172,9 @@ export default {
                 ...state,
                 data: curData,
                 filteredData: curData,
-                center: curData.length > 0 ? {
+                firstmarker: curData.length > 0 ? {
                     lat: parseFloat(curData[0].location.lat),
-                    lng: parseFloat(curData[0].location.lng)
-                } : {
-                    lat: -3.745,
-                    lng: -38.523
-                },
+                    lng: parseFloat(curData[0].location.lng)} : null,
                 curSquads: action.payload.curSquads,
             };
         },
@@ -207,6 +227,50 @@ export default {
             }
         },
 
+        getShapeTags(state, action) {
+            let processedTags = [];
+            shapeTags.forEach((shapeTag, idx) => {
+                processedTags.push({
+                    idx: idx,
+                    shapeTag: shapeTag,
+                });
+            });
+            return {
+                ...state,
+                shapeTags: processedTags,
+            }
+        },
+
+        setShapeTag(state, action) {
+            shapeTags.push(action.shapeTag);
+            let processedTags = [];
+            shapeTags.forEach((shapeTag, idx) => {
+                processedTags.push({
+                    idx: idx,
+                    shapeTag: shapeTag,
+                });
+            });
+            return {
+                ...state,
+                shapeTags: processedTags,
+            }
+        },
+
+        removeShapeTag(state, action) {
+            shapeTags.splice(action.idx, 1);
+            let processedTags = [];
+            shapeTags.forEach((shapeTag, idx) => {
+                processedTags.push({
+                    idx: idx,
+                    shapeTag: shapeTag,
+                });
+            });
+            return {
+                ...state,
+                shapeTags: processedTags,
+            }
+        },
+
         clearData(state) {
             console.log('clean');
             return {
@@ -223,6 +287,7 @@ export default {
                     lat: -3.745,
                     lng: -38.523
                 },
+                firstmarker: null,
                 curHistoryData: [],
             }
         }
