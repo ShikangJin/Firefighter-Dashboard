@@ -149,7 +149,7 @@ class Map extends React.Component {
         return (
             <div>                
                 <Drawer
-                    title="Squad Searching Panel"
+                    title="Engines Searching Panel"
                     width={520}
                     closable={false}
                     onClose={() => this.setDrawer(false)}

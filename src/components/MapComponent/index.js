@@ -1,11 +1,12 @@
 /* global google */
 import React from 'react';
-import { Popover,Popconfirm, Input, Dropdown, Button, Menu, Tag, Card, Icon, Modal, message } from 'antd';
+import { Popover,Popconfirm, Input, Dropdown, Button, Menu, Tag, Card, Icon, Modal, message, Tooltip } from 'antd';
 import { GoogleMap, LoadScript, DrawingManager, Marker, InfoWindow, OverlayView, Rectangle, Circle, Polygon } from '@react-google-maps/api';
 import TweenOne from 'rc-tween-one';
 import QueueAnim from 'rc-queue-anim';
 import Pic from '@/assets/demoPic.jpg';
 import mapAuth from '@/assets/mapKey.json';
+import TimerPanel from '@/components/TimerPanel';
 
 const libs = ['drawing'];
 const fillColor = '#ba2727';
@@ -259,7 +260,7 @@ export default class MapComponent extends React.Component {
             <LoadScript
                 id="script-loader"
                 libraries={libs}
-                // googleMapsApiKey={mapAuth.key}
+                googleMapsApiKey={mapAuth.key}
             >
                 <GoogleMap
                     id='example-map'
@@ -348,18 +349,24 @@ export default class MapComponent extends React.Component {
                     </Button>
 
                     <div style={{'position': 'absolute', 'bottom': 60, 'left': 5,}}>
-                        <Button shape='circle' onClick={deletePoly} size='small' style={{'marginRight': 5}}>
-                            <Icon type="close" />
-                        </Button>
-                        <Button shape='circle' onClick={this.addPoly.bind(this)} size='small'>
-                            <Icon type="check" />
-                        </Button>
+                        <Tooltip placement="top" title='Cancle Shape'>
+                            <Button shape='circle' onClick={deletePoly} size='small' style={{'marginRight': 5}}>
+                                <Icon type="close" />
+                            </Button>
+                        </Tooltip>
+                        <Tooltip placement="top" title='Confirm Shape'>
+                            <Button shape='circle' onClick={this.addPoly.bind(this)} size='small'>
+                                <Icon type="check" />
+                            </Button>
+                        </Tooltip>
                     </div>
 
                     <div style={{position: 'absolute', 'bottom': '20px', 'right': 0, 'left': 0, 'marginRight': 'auto', 'marginLeft': 'auto', 'width': 210, 'display': 'flex'}}>
-                        <Button style={{'width': 30, 'padding': 0}} onClick={() => this.setState({ deleteTagModal: true })}>
-                            <Icon type="delete" />
-                        </Button>
+                        <Tooltip placement="top" title='Delete Tag'>
+                            <Button style={{'width': 30, 'padding': 0}} onClick={() => this.setState({ deleteTagModal: true })}>
+                                <Icon type="delete" />
+                            </Button>
+                        </Tooltip>
                         <Modal
                             title="Please confirm to delete this tag"
                             visible={this.state.deleteTagModal}
@@ -400,7 +407,9 @@ export default class MapComponent extends React.Component {
                             visible={this.state.visible}
                             onVisibleChange={this.handleVisibleChange}
                         >
-                            <Button style={{'width': 30, 'padding': 0}}> <Icon type="plus" /> </Button>
+                             <Tooltip placement="top" title='Add New Tag'>
+                                <Button style={{'width': 30, 'padding': 0}}> <Icon type="plus" /> </Button>
+                             </Tooltip>
                         </Popover>
                         <Modal
                             title="Please confirm to add this tag"
@@ -415,6 +424,7 @@ export default class MapComponent extends React.Component {
                             <p>{this.state.newPropValue}</p>
                         </Modal>
                     </div>
+                    <TimerPanel />
                     {this.loadOverlays()}
                     {this.loadMarkers(information)}
                 </GoogleMap> 

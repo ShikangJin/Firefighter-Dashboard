@@ -28,7 +28,7 @@ class SquadFinder extends React.Component {
                             <Select
                                 mode="tags"
                                 size="default"
-                                placeholder="Please select squads"
+                                placeholder="Please select engines"
                                 onChange={value => this.props.fetchData(value)}
                                 style={{width: '100%'}}
                             >

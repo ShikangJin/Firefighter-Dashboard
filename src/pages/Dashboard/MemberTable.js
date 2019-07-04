@@ -8,7 +8,7 @@ class MemberTable extends React.Component {
     componentWillMount() {
         columns = [
             {
-                title: 'Squad',
+                title: 'Engine',
                 dataIndex: 'squad',
                 key: 'squad',
                 render: text => <span style={{'fontWeight': 'bold'}}>{text}</span>,
