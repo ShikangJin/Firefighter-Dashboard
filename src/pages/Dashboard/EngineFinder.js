@@ -3,13 +3,10 @@ import { Card, Row, Col, Select, Input } from 'antd';
 
 const { Option } = Select;
 const Search = Input.Search;
-// const squads = [];
-// for (let i = 0; i < 10; i++) {
-//     squads.push(<Option key={'Squad' + i}>{'Squad' + i}</Option>);
-// }
 
-const MemberTable = React.lazy(() => import('./MemberTable.js'));
-class SquadFinder extends React.Component {
+const MemberTable = React.lazy(() => import('@/components/MemberTable'));
+
+class EngineFinder extends React.Component {
 
     generateOptions(squads) {
         const options = [];
@@ -54,4 +51,4 @@ class SquadFinder extends React.Component {
     }
 }
 
-export default SquadFinder;
+export default EngineFinder;

@@ -8,10 +8,6 @@ export default {
     namespace: 'information',
 
     state: {
-        visible: false, 
-        childDrawer: false ,
-        formDrawer: false,
-        curIdx: -1,
         curSquads: [],
         curName: '',
         data: [],
@@ -27,32 +23,12 @@ export default {
     },
 
     effects: {
-        *drawer(payload, { call, put }) {
-            yield put({
-                type: 'setDrawer',
-                payload: { ...payload },
-            });
-        },
 
-        *childDrawer(payload, { call, put }) {
-            const { childDrawer, curIdx, id } = payload;
-            if (!childDrawer) {
-                yield put({
-                    type: 'setDrawer',
-                    payload: {
-                        childDrawer: childDrawer,
-                    },   
-                });
-                return;
-            }
-            const response = yield call(fakeHistoryData, id);
+        *getHistory(payload, { call, put }) {
+            const response = yield call(fakeHistoryData, payload.id);
             yield put({
-                type: 'setDrawer',
-                payload: {
-                    childDrawer: childDrawer,
-                    curIdx: curIdx,
-                    curHistoryData: response,
-                },
+                type: 'fetchHistory',          
+                curHistoryData: response,          
             });
         },
 
@@ -150,10 +126,11 @@ export default {
     },
 
     reducers: {
-        setDrawer(state, action) {
+
+        fetchHistory(state, action) {
             return {
                 ...state,
-                ...action.payload,
+                curHistoryData: action.curHistoryData
             };
         },
 
@@ -168,13 +145,18 @@ export default {
                 });
             });
             console.log(curData);
+            let firstmarker = null;
+            curData.some(data => {
+                if (data.location !== undefined) {
+                    firstmarker = data;
+                    return true;
+                }
+            });
             return {
                 ...state,
                 data: curData,
                 filteredData: curData,
-                firstmarker: curData.length > 0 ? {
-                    lat: parseFloat(curData[0].location.lat),
-                    lng: parseFloat(curData[0].location.lng)} : null,
+                firstmarker: firstmarker,
                 curSquads: action.payload.curSquads,
             };
         },
@@ -275,10 +257,6 @@ export default {
             console.log('clean');
             return {
                 ...state,
-                visible: false, 
-                childDrawer: false,
-                formDrawer: false,
-                curIdx: -1,
                 curSquads: [],
                 curName: '',
                 data: [],

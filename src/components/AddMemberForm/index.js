@@ -1,10 +1,7 @@
 import React from 'react';
 import { Form, Input, Button, Upload, Icon, message } from 'antd';
-import { connect } from 'dva';
-
 
 function getBase64(img, callback) {
-    console.log(img);
     const reader = new FileReader();
     reader.addEventListener('load', () => callback(reader.result));
     reader.readAsDataURL(img);
@@ -13,20 +10,14 @@ function getBase64(img, callback) {
 function beforeUpload(file) {
     const isJPG = file.type === 'image/jpeg';
     const isPNG = file.type === 'image/png';
-    if (!isJPG && !isPNG) {
+    if (!isJPG && !isPNG) 
         message.error('You can only upload JPG or PNG file!');
-    }
     const isLt2M = file.size / 1024 / 1024 < 2;
-    if (!isLt2M) {
+    if (!isLt2M) 
         message.error('Image must smaller than 2MB!');
-    }
     return (isJPG || isPNG) && isLt2M;
 }
 
-  
-@connect(({ information }) => ({
-    information,
-}))
 class RegistrationForm extends React.Component {
     
     state = {
@@ -42,7 +33,6 @@ class RegistrationForm extends React.Component {
         if (info.file.status === 'done') {
             // Get this url from response in real world.
             getBase64(info.file.originFileObj, imageUrl => {
-                console.log(imageUrl);
                 this.setState({
                     imageUrl,
                     loading: false,
@@ -59,19 +49,12 @@ class RegistrationForm extends React.Component {
                 return;
             }
             this.props.form.resetFields();
-            dispatch({
-                type: 'information/addMember',
-                name: values.name,
-                age: values.age,
-                squad: values.squad,
-                pic: this.state.imageUrl,
-            });
+            this.props.addMember(values, this.state.imageUrl);
         });
     };
       
       
     render() {
-
         const formItemLayout = {
             labelCol: {
                 xs: { span: 24 },
@@ -103,8 +86,8 @@ class RegistrationForm extends React.Component {
             </div>
         );
         const imageUrl = this.state.imageUrl;
-
         const { getFieldDecorator } = this.props.form;
+        
         return (
             <Form {...formItemLayout} onSubmit={this.handleSubmit}>
                 <Form.Item> 
@@ -147,5 +130,5 @@ class RegistrationForm extends React.Component {
     }
 }
 
-const AddForm = Form.create({ name: 'register' })(RegistrationForm);
-export default AddForm;
+const AddMemberForm = Form.create({ name: 'register' })(RegistrationForm);
+export default AddMemberForm;

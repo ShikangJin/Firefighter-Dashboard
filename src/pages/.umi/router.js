@@ -105,6 +105,7 @@ models: () => [
 models: () => [
   import(/* webpackChunkName: 'p__Dashboard__models__activities.js' */'/Users/skjin/firefighter-dashboard/src/pages/Dashboard/models/activities.js').then(m => { return { namespace: 'activities',...m.default}}),
   import(/* webpackChunkName: 'p__Dashboard__models__chart.js' */'/Users/skjin/firefighter-dashboard/src/pages/Dashboard/models/chart.js').then(m => { return { namespace: 'chart',...m.default}}),
+  import(/* webpackChunkName: 'p__Dashboard__models__drawer.js' */'/Users/skjin/firefighter-dashboard/src/pages/Dashboard/models/drawer.js').then(m => { return { namespace: 'drawer',...m.default}}),
   import(/* webpackChunkName: 'p__Dashboard__models__information.js' */'/Users/skjin/firefighter-dashboard/src/pages/Dashboard/models/information.js').then(m => { return { namespace: 'information',...m.default}}),
   import(/* webpackChunkName: 'p__Dashboard__models__monitor.js' */'/Users/skjin/firefighter-dashboard/src/pages/Dashboard/models/monitor.js').then(m => { return { namespace: 'monitor',...m.default}})
 ],
@@ -121,6 +122,7 @@ models: () => [
 models: () => [
   import(/* webpackChunkName: 'p__Dashboard__models__activities.js' */'/Users/skjin/firefighter-dashboard/src/pages/Dashboard/models/activities.js').then(m => { return { namespace: 'activities',...m.default}}),
   import(/* webpackChunkName: 'p__Dashboard__models__chart.js' */'/Users/skjin/firefighter-dashboard/src/pages/Dashboard/models/chart.js').then(m => { return { namespace: 'chart',...m.default}}),
+  import(/* webpackChunkName: 'p__Dashboard__models__drawer.js' */'/Users/skjin/firefighter-dashboard/src/pages/Dashboard/models/drawer.js').then(m => { return { namespace: 'drawer',...m.default}}),
   import(/* webpackChunkName: 'p__Dashboard__models__information.js' */'/Users/skjin/firefighter-dashboard/src/pages/Dashboard/models/information.js').then(m => { return { namespace: 'information',...m.default}}),
   import(/* webpackChunkName: 'p__Dashboard__models__monitor.js' */'/Users/skjin/firefighter-dashboard/src/pages/Dashboard/models/monitor.js').then(m => { return { namespace: 'monitor',...m.default}})
 ],
@@ -137,6 +139,7 @@ models: () => [
 models: () => [
   import(/* webpackChunkName: 'p__Dashboard__models__activities.js' */'/Users/skjin/firefighter-dashboard/src/pages/Dashboard/models/activities.js').then(m => { return { namespace: 'activities',...m.default}}),
   import(/* webpackChunkName: 'p__Dashboard__models__chart.js' */'/Users/skjin/firefighter-dashboard/src/pages/Dashboard/models/chart.js').then(m => { return { namespace: 'chart',...m.default}}),
+  import(/* webpackChunkName: 'p__Dashboard__models__drawer.js' */'/Users/skjin/firefighter-dashboard/src/pages/Dashboard/models/drawer.js').then(m => { return { namespace: 'drawer',...m.default}}),
   import(/* webpackChunkName: 'p__Dashboard__models__information.js' */'/Users/skjin/firefighter-dashboard/src/pages/Dashboard/models/information.js').then(m => { return { namespace: 'information',...m.default}}),
   import(/* webpackChunkName: 'p__Dashboard__models__monitor.js' */'/Users/skjin/firefighter-dashboard/src/pages/Dashboard/models/monitor.js').then(m => { return { namespace: 'monitor',...m.default}})
 ],
@@ -153,6 +156,7 @@ models: () => [
 models: () => [
   import(/* webpackChunkName: 'p__Dashboard__models__activities.js' */'/Users/skjin/firefighter-dashboard/src/pages/Dashboard/models/activities.js').then(m => { return { namespace: 'activities',...m.default}}),
   import(/* webpackChunkName: 'p__Dashboard__models__chart.js' */'/Users/skjin/firefighter-dashboard/src/pages/Dashboard/models/chart.js').then(m => { return { namespace: 'chart',...m.default}}),
+  import(/* webpackChunkName: 'p__Dashboard__models__drawer.js' */'/Users/skjin/firefighter-dashboard/src/pages/Dashboard/models/drawer.js').then(m => { return { namespace: 'drawer',...m.default}}),
   import(/* webpackChunkName: 'p__Dashboard__models__information.js' */'/Users/skjin/firefighter-dashboard/src/pages/Dashboard/models/information.js').then(m => { return { namespace: 'information',...m.default}}),
   import(/* webpackChunkName: 'p__Dashboard__models__monitor.js' */'/Users/skjin/firefighter-dashboard/src/pages/Dashboard/models/monitor.js').then(m => { return { namespace: 'monitor',...m.default}})
 ],

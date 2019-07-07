@@ -7,6 +7,7 @@ import QueueAnim from 'rc-queue-anim';
 import Pic from '@/assets/demoPic.jpg';
 import mapAuth from '@/assets/mapKey.json';
 import TimerPanel from '@/components/TimerPanel';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group'; 
 
 const libs = ['drawing'];
 const fillColor = '#ba2727';
@@ -56,7 +57,6 @@ export default class MapComponent extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log(nextProps);
         if (this.props.firstmarker != nextProps.firstmarker && nextProps.firstmarker !== null) {
             this.mapRef.panTo(nextProps.firstmarker);
         }  
@@ -81,7 +81,25 @@ export default class MapComponent extends React.Component {
 
     loadMarkers(information) {
         // console.log(this._google);
+       
         const { filteredData } = information;
+        const flashTemplate = [
+            '<?xml version="1.0"?>',
+            '<svg width="26px" height="26px" viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg">',
+            '<circle stroke="#222" fill="{{ color }}" cx="50" cy="50" r="35">',
+            '<animate attributeType="XML" attributeName="fill" values="#800;#f00;#800;#800" dur="0.8s" repeatCount="indefinite"/>',
+            '</circle>',
+            '</svg>'
+        ].join('\n');
+        const normalTemplate = [
+            '<?xml version="1.0"?>',
+            '<svg width="26px" height="26px" viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg">',
+            '<circle stroke="#222" fill="{{ color }}" cx="50" cy="50" r="35">',
+            '</circle>',
+            '</svg>'
+        ].join('\n');
+        const flashSvg = flashTemplate.replace('{{ color }}', '#e60017');
+        const normalSvg = normalTemplate.replace('{{ color }}', '#00cc25');
         let markerArr = [];
         if (filteredData.length == 0) return markerArr;
         filteredData.forEach((member, index) => {
@@ -99,6 +117,9 @@ export default class MapComponent extends React.Component {
                         onClick={() => this.setState({
                             showInfo: index,
                         })}
+                        icon={{
+                            url: member.status === 'MayDay' ? 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(flashSvg) : 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(normalSvg), 
+                        }}
                     >
                         {this.state.showInfo === index && 
                             <InfoWindow 
@@ -122,10 +143,12 @@ export default class MapComponent extends React.Component {
                                     </div>}/>        
                                 </Card>
                             </InfoWindow>
-                       }
-                    </Marker>
+                        }
+                    </Marker> 
                 );
-            }    
+            } 
+           
+               
         });
         return markerArr;
     }
@@ -260,7 +283,7 @@ export default class MapComponent extends React.Component {
             <LoadScript
                 id="script-loader"
                 libraries={libs}
-                googleMapsApiKey={mapAuth.key}
+                // googleMapsApiKey={mapAuth.key}
             >
                 <GoogleMap
                     id='example-map'
