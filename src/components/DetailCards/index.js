@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card } from 'antd';
 import { MiniArea, LineChart } from '@/components/Charts';
+import styles from './index.less';
 
 const defaultLocation = {
     lat: 0,
@@ -63,19 +64,19 @@ class DetailCards extends React.Component {
         return (
             <React.Fragment>
                 <Card 
+                    className={styles.card}
                     hoverable={true}
                     title={'Basic Information'}
-                    style={{ 'marginBottom': 12 }}
                 >
-                    <img src={image} alt="pic" style={{'width': 160, 'marginLeft': '50%', 'marginBottom': 14, 'left': -80, 'position': 'relative'}}/>
+                    <img src={image} alt="pic" className={styles.img}/>
                     <p> {'Name: ' + name} </p>
                     <p> {'Age: ' + age} </p>
                 </Card>
                 
                 <Card 
+                    className={styles.card}
                     hoverable={true}
                     title={'Real-Time Data'}
-                    style={{'marginBottom': 12}}
                 >
                     <p> {'Body Temperature: ' + bodyTemp} </p>    
                     <p> {'Heart Rate: ' + heartRate} </p>
@@ -84,17 +85,19 @@ class DetailCards extends React.Component {
                     <p> {'Air Quality: ' + (airQuality)} </p>
                 </Card>
 
-                <Card hoverable={true}
-                        title={'GPS'}
-                        style={{ 'marginBottom': 12 }}
+                <Card 
+                    className={styles.card}
+                    hoverable={true}
+                    title={'GPS'}
                 >
                     <p>{'Time: ' + timestamp + ' ' + timeDetail}</p>
                     <p>{'Current Latitude: ' + location.lat}</p>
                     <p>{'Current Longitude: ' + location.lng}</p>
                 </Card>
-                <Card hoverable={true}
-                        title={'History Body Temperature'}
-                        style={{ 'marginBottom': 12 }}
+                <Card 
+                    className={styles.card}
+                    hoverable={true}
+                    title={'History Body Temperature'}
                 >
                     <MiniArea 
                         color="#f2a521" 
@@ -102,9 +105,10 @@ class DetailCards extends React.Component {
                         scale={{ y: { min: 35, max: 39 } }}
                     />
                 </Card>
-                <Card hoverable={true}
-                        title={'History Heart Rate'}
-                        style={{ 'marginBottom': 12 }}
+                <Card 
+                    className={styles.card}
+                    hoverable={true}
+                    title={'History Heart Rate'}
                 >
                     <LineChart 
                         data={this.parseData(historyData, 'heartRate')}

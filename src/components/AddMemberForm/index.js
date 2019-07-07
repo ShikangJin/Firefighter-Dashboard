@@ -1,5 +1,6 @@
 import React from 'react';
 import { Form, Input, Button, Upload, Icon, message } from 'antd';
+import styles from './index.less';
 
 function getBase64(img, callback) {
     const reader = new FileReader();
@@ -87,11 +88,11 @@ class RegistrationForm extends React.Component {
         );
         const imageUrl = this.state.imageUrl;
         const { getFieldDecorator } = this.props.form;
-        
+
         return (
-            <Form {...formItemLayout} onSubmit={this.handleSubmit}>
-                <Form.Item> 
-                    <div style={{'marginLeft': '50%'}}>
+            <Form {...formItemLayout} onSubmit={this.handleSubmit} className={styles.form}>
+                <Form.Item className={styles.imgUploadItem}> 
+                    <div className={styles.imgUploadField}>
                         <Upload
                             name="avatar"
                             listType="picture-card"
@@ -101,7 +102,7 @@ class RegistrationForm extends React.Component {
                             beforeUpload={beforeUpload}
                             onChange={this.handleChange} 
                         >
-                            {imageUrl ? <img src={imageUrl} alt="avatar" style={{'width': 160, 'marginLeft': '50%', 'marginBottom': 14, 'left': -80, 'position': 'relative'}} /> : uploadButton}
+                            {imageUrl ? <img src={imageUrl} alt="avatar" className={styles.img} /> : uploadButton}
                         </Upload>
                     </div>
                 </Form.Item>

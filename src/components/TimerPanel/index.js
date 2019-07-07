@@ -2,6 +2,7 @@ import React from 'react';
 import { Popover, Button, Icon, Tooltip } from 'antd';
 import StopWatch from './StopWatch.js';
 import CountdownTimer from './CountdownTimer.js';
+import styles from './index.less';
 
 class TimerPanel extends React.Component {
 
@@ -28,18 +29,26 @@ class TimerPanel extends React.Component {
         const stopWatchTitle = (
             <React.Fragment> 
                 <span>Stop Watch</span> 
-                <Icon type="close" onClick={() => this.hide('stopwatch')} style={{'float': 'right', 'marginTop': 4}}/>
+                <Icon 
+                    type="close" 
+                    onClick={() => this.hide('stopwatch')} 
+                    className={styles.icon} 
+                />
             </React.Fragment>
         );
         const countDownTitle = (
             <React.Fragment> 
                 <span>Count Down Timer</span> 
-                <Icon type="close" onClick={() => this.hide('countdown')} style={{'float': 'right', 'marginTop': 4}}/>
+                <Icon 
+                    type="close" 
+                    onClick={() => this.hide('countdown')} 
+                    className={styles.icon} 
+                />
             </React.Fragment>
         );
 
         return (
-            <div style={{'position': 'absolute', 'zIndex': 100, 'right': '20%', 'top': '10px'}}>
+            <div className={styles.timerPanel}>
                 <Popover
                     content={<StopWatch />}
                     title={stopWatchTitle}
@@ -47,7 +56,11 @@ class TimerPanel extends React.Component {
                     visible={this.state.stopWatchVisible}
                 >
                     <Tooltip placement="top" title='Stop Watch'>
-                        <Button onClick={() => this.handleVisibleChange('stopwatch')} shape='circle' style={{'marginRight': 10}}>
+                        <Button 
+                            onClick={() => this.handleVisibleChange('stopwatch')} 
+                            shape='circle' 
+                            className={styles.stopWatchButton} 
+                        >
                             <Icon type="clock-circle" theme="filled" />
                         </Button>
                     </Tooltip>
@@ -61,7 +74,10 @@ class TimerPanel extends React.Component {
                     visible={this.state.countDownVisible}
                 >
                     <Tooltip placement="top" title='Count Down Timer'>
-                        <Button onClick={() => this.handleVisibleChange('countdown')} shape='circle'>
+                        <Button 
+                            onClick={() => this.handleVisibleChange('countdown')} 
+                            shape='circle'
+                        >
                             <Icon type="clock-circle" theme="filled" />
                         </Button>
                     </Tooltip>

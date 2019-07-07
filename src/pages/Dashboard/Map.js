@@ -1,8 +1,7 @@
-import React, { Suspense } from 'react';
-import { Drawer, Button, Card } from 'antd';
+import React from 'react';
+import { Drawer, Button } from 'antd';
 import { connect } from 'dva';
 import openSocket from 'socket.io-client';
-import { MiniArea, LineChart } from '@/components/Charts';
 import  MapComponent from '@/components/MapComponent';
 import DetailCards from '@/components/DetailCards';
 import AddMemberForm from '@/components/AddMemberForm';
