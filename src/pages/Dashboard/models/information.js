@@ -148,7 +148,7 @@ export default {
             let firstmarker = null;
             curData.some(data => {
                 if (data.location !== undefined) {
-                    firstmarker = data;
+                    firstmarker = data.location;
                     return true;
                 }
             });

@@ -9,14 +9,14 @@ export default {
     },
 
     effects: {
-        *firstDrawer(payload, { call, put }) {
+        *basicDrawer(payload, { _, put }) {
             yield put({
                 type: 'setDrawer',
                 payload: { ...payload },
             });
         },
 
-        *secondDrawer(payload, { call, put }) {
+        *infoDrawer(payload, { _, put }) {
             const { childDrawer, curIdx } = payload;
             if (!childDrawer) {
                 yield put({

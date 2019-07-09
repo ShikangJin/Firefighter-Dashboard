@@ -51,6 +51,7 @@ class CountdownTimer extends React.Component {
     }
 
     startTimer() {
+        if (this.state.start) return;
         this.setState({
             timer: setInterval(this.tick.bind(this), 10),
             start: true,

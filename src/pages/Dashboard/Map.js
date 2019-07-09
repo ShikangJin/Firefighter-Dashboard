@@ -39,17 +39,13 @@ class Map extends React.Component {
         });        
     }
 
-    componentWillUnmount() {
-        const { dispatch } = this.props;
-        // must call disconnect here to remove callback function at server side 
-        socket.disconnect(true);
-        dispatch({ type: 'information/clear' });
-    }
-
+    /**
+     * Drawer Control Functions
+     */
     setDrawer = (status) => {
         const { dispatch } = this.props;  
         dispatch({
-            type: 'drawer/firstDrawer',
+            type: 'drawer/basicDrawer',
             visible: status,
         });
     };
@@ -57,7 +53,7 @@ class Map extends React.Component {
     setFormDrawer = (status) => {
         const { dispatch } = this.props;
         dispatch({
-            type: 'drawer/firstDrawer',
+            type: 'drawer/basicDrawer',
             formDrawer: status,
         });
     };
@@ -65,7 +61,7 @@ class Map extends React.Component {
     openChildDrawer = (index) => {
         const { dispatch, information } = this.props;  
         dispatch({
-            type: 'drawer/secondDrawer',
+            type: 'drawer/infoDrawer',
             curIdx: index,
             childDrawer: true,
         });
@@ -74,15 +70,19 @@ class Map extends React.Component {
             id: information.filteredData[index].id,
         });
     };
-    
+
     closeChildDrawer = () => {
         const { dispatch } = this.props;  
         dispatch({
-            type: 'drawer/secondDrawer',
+            type: 'drawer/infoDrawer',
             childDrawer: false,
         });
     };
 
+
+    /**
+     *  Data Handling Functions
+     */
     fetchData(curSquads) {
         const { dispatch, information } = this.props;  
         dispatch({
@@ -127,6 +127,13 @@ class Map extends React.Component {
             squad: values.squad,
             pic: imageUrl,
         });
+    }
+
+    componentWillUnmount() {
+        const { dispatch } = this.props;
+        // must call disconnect here to remove callback function at server side 
+        socket.disconnect(true);
+        dispatch({ type: 'information/clear' });
     }
 
     render() {
