@@ -1,5 +1,6 @@
 import React from 'react';
 import { Menu, Tooltip, Button, Icon, Popover, Input, Modal, Dropdown, message } from 'antd';
+import styles from './index.less';
 
 class TagControlPanel extends React.Component {
     state = {
@@ -49,29 +50,26 @@ class TagControlPanel extends React.Component {
     render() {
         const { selectedTag } = this.props;
         return (
-            <div style={{position: 'absolute', 'bottom': '20px', 'right': 0, 'left': 0, 'marginRight': 'auto', 'marginLeft': 'auto', 'width': 210, 'display': 'flex'}}>
+            <div className={styles.container}>
+
                 <Tooltip placement="top" title='Delete Tag'>
-                    <Button style={{'width': 30, 'padding': 0}} onClick={() => this.setState({ deleteTagModal: true })}>
+                    <Button 
+                        className={styles.controlBtm} 
+                        onClick={() => this.setState({ deleteTagModal: true })}
+                    >
                         <Icon type="delete" />
                     </Button>
                 </Tooltip>
-                <Modal
-                    title="Please confirm to delete this tag"
-                    visible={this.state.deleteTagModal}
-                    onOk={() => this.handleDeleteTag.bind(this)(selectedTag)}
-                    onCancel={() => this.setState({deleteTagModal: false})}
-                    width={300}
-                >
-                    <p>{selectedTag.shapeTag}</p>
-                </Modal>
+                
                 <Dropdown overlay={this.createMenu(this.props.tags)} placement="topCenter">
-                    <Button style={{'width': 150, 'display': 'flex'}}>
-                        <span style={{'wordWrap': 'break-word', 'width': '90%', 'display': 'block', 'whiteSpace': 'nowrap', 'overflow': 'hidden', 'textOverflow': 'ellipsis'}}>
+                    <Button className={styles.dropdownBtm}>
+                        <span className={styles.tag}>
                             {selectedTag.shapeTag}   
                         </span>  
-                        <Icon type="up" style={{'width': '10%'}}/>
+                        <Icon type="up" className={styles.icon}/>
                     </Button>
                 </Dropdown>
+                
                 <Popover
                     content={ 
                         <Input 
@@ -86,10 +84,20 @@ class TagControlPanel extends React.Component {
                     visible={this.state.visible}
                     onVisibleChange={this.handleVisibleChange}
                 >
-                        <Tooltip placement="top" title='Add New Tag'>
-                        <Button style={{'width': 30, 'padding': 0}}> <Icon type="plus" /> </Button>
-                        </Tooltip>
+                    <Tooltip placement="top" title='Add New Tag'>
+                        <Button className={styles.controlBtm}> <Icon type="plus" /> </Button>
+                    </Tooltip>
                 </Popover>
+
+                <Modal
+                    title="Please confirm to delete this tag"
+                    visible={this.state.deleteTagModal}
+                    onOk={() => this.handleDeleteTag.bind(this)(selectedTag)}
+                    onCancel={() => this.setState({deleteTagModal: false})}
+                    width={300}
+                >
+                    <p>{selectedTag.shapeTag}</p>
+                </Modal>
                 <Modal
                     title="Please confirm to add this tag"
                     visible={this.state.addTagModal}
@@ -99,6 +107,7 @@ class TagControlPanel extends React.Component {
                 >
                     <p>{this.state.newPropValue}</p>
                 </Modal>
+
             </div>
         );
     }

@@ -8,6 +8,9 @@ import CustomOverlays from './CustomOverlays';
 import MarkerGroup from './MarkerGroup';
 import mapAuth from '@/assets/mapKey.json';
 import { mapContainerStyle, libs } from './settings';
+import styles from './index.less';
+
+var keyIdx = 0;
 
 export default class MapComponent extends React.Component {
 
@@ -34,24 +37,42 @@ export default class MapComponent extends React.Component {
         }); 
     }
 
+    init(map) {
+        this.mapRef = map;
+        this._google = window.google;
+    }
+
     removeOverlay(overlay) {
         this.setState({ overlay: overlay });
     }
 
     addPoly() {
         const overlay = [...this.state.overlay];
-        if (this.selectedPoly === null) {
-            return;
-        }
+        const text = this.state.selectedTag.shapeTag;
+        if (this.selectedPoly === null) return;
         if (this.selectedPoly.center !== undefined) {
-            overlay.push({shape: 'circle', center: this.selectedPoly.center, radius: this.selectedPoly.radius, text: this.state.selectedTag.shapeTag});
+            overlay.push({ 
+                shape: 'circle', 
+                center: this.selectedPoly.center, 
+                radius: this.selectedPoly.radius, 
+                text: text, 
+                key: keyIdx++,
+            });
         } else if (this.selectedPoly.bounds !== undefined) {
-            overlay.push({shape: 'rect', bounds: this.selectedPoly.bounds, text: this.state.selectedTag.shapeTag});
+            overlay.push({
+                shape: 'rect', 
+                bounds: this.selectedPoly.bounds, 
+                text: text,
+                key: keyIdx++,
+            });
         } else if (this.selectedPoly.getPaths !== undefined) {
-            overlay.push({shape: 'poly', paths: this.selectedPoly.getPaths(), text: this.state.selectedTag.shapeTag});
-        } else {
-            return;
-        }
+            overlay.push({
+                shape: 'poly', 
+                paths: this.selectedPoly.getPaths(), 
+                text: text,
+                key: keyIdx++,
+            });
+        } else return;
         this.selectedPoly.setMap(null);
         this.selectedPoly = null;
         this.setState({overlay: overlay});
@@ -63,15 +84,9 @@ export default class MapComponent extends React.Component {
         });
     }
 
-    init(map) {
-        this.mapRef = map;
-        this._google = window.google;
-    }
-
     render() {
-        const { information, firstmarker } = this.props;
+        const { filteredData, center, firstmarker } = this.props;
         const { inputVisible, inputValue } = this.state;
-        const { filteredData } = information; 
         return (
             <LoadScript
                 id="script-loader"
@@ -82,7 +97,7 @@ export default class MapComponent extends React.Component {
                     id='example-map'
                     mapContainerStyle={mapContainerStyle}
                     zoom={15}
-                    center={information.center}
+                    center={center}
                     clickableIcons={false}
                     onLoad={map => this.init.bind(this)(map)}
                 >
@@ -91,7 +106,11 @@ export default class MapComponent extends React.Component {
                         addPoly={this.addPoly.bind(this)}
                     />
                     
-                    <Button type="primary" onClick={() => this.props.setDrawer(true)} style={{'position': 'absolute', 'right': 0, 'left': 0, 'marginRight': 'auto', 'marginLeft': 'auto', 'width': 150, 'marginTop': 10}}>
+                    <Button 
+                        type="primary"
+                        onClick={() => this.props.setDrawer(true)} 
+                        className={styles.searchBtm}
+                    >
                         Searching Panel
                     </Button>
 

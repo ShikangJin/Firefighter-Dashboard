@@ -138,7 +138,7 @@ class Map extends React.Component {
 
     render() {
         const { information, drawer } = this.props;
-        const { data, filteredData, wholeData, firstmarker, shapeTags, curHistoryData } = information;
+        const { data, filteredData, wholeData, firstmarker, shapeTags, curHistoryData, center } = information;
         const { visible, childDrawer, curIdx, formDrawer } = drawer;
         console.log(information);
         return (
@@ -187,7 +187,8 @@ class Map extends React.Component {
                 </Drawer>
                 
                 <MapComponent 
-                    information={information} 
+                    filteredData={filteredData} 
+                    center={center}
                     setDrawer={this.setDrawer.bind(this)}
                     firstmarker={firstmarker}
                     tags={shapeTags}

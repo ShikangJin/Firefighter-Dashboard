@@ -2,6 +2,7 @@ import React from 'react';
 import { drawingManagerOptions } from '../settings';
 import { Tooltip, Button, Icon } from 'antd';
 import { DrawingManager } from '@react-google-maps/api';
+import styles from './index.less';
 
 class DrawingManagerPro extends React.Component {
 
@@ -46,12 +47,16 @@ class DrawingManagerPro extends React.Component {
 
     render() {
         const { parentRef, addPoly } = this.props;
-
         return (
             <React.Fragment>
-                <div style={{'position': 'absolute', 'bottom': 60, 'left': 5,}}>
+                <div className={styles.controlPanel}>
                     <Tooltip placement="top" title='Cancle Shape'>
-                        <Button shape='circle' onClick={() => this.deletePoly(parentRef)} size='small' style={{'marginRight': 5}}>
+                        <Button 
+                            shape='circle' 
+                            onClick={() => this.deletePoly(parentRef)} 
+                            size='small' 
+                            className={styles.controlBtm}
+                        >
                             <Icon type="close" />
                         </Button>
                     </Tooltip>
