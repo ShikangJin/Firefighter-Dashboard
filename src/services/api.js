@@ -132,6 +132,10 @@ export async function fakeHistoryData(id) {
   return request(`/realServer/firefighter/history?id=${id}`);
 }
 
+export async function getInfo() {
+  return request('/realServer/firefighter/info');
+}
+
 export async function addNewMember(params) {
   request(`/realServer/addMember`, {
     method: 'POST',

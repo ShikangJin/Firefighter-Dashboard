@@ -45,7 +45,7 @@ class DetailCards extends React.Component {
     }
 
     render() {
-        const { data, historyData } = this.props;
+        let { data, historyData } = this.props;
         if (data === undefined) data = defaultData;
         if (data.location === undefined) data.location = defaultLocation;
         const { 

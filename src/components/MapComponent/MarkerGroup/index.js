@@ -38,7 +38,7 @@ class MarkerGroup extends React.Component {
         if (filteredData.length == 0) return markerArr;
         filteredData.forEach((member, index) => {
             const { name, location, status, image } = member;
-            if (location === undefined) return;
+            if (location === undefined || (location.lat == 0 && location.lng == 0)) return;
             const parsedLocation = {
                 lat: parseFloat(location.lat),
                 lng: parseFloat(location.lng)

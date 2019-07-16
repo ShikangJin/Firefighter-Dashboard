@@ -19,24 +19,45 @@ class Map extends React.Component {
         const { dispatch } = this.props;
         socket = openSocket('http://localhost:3000/', { 'forceNew': true })
         // don't need to call disconnect when refreshing page since it will auto trigger disconnect
-        window.onbeforeunload = dispatch({ type: 'information/clear' });  
-        socket.on('update', function(data) {
-            console.log(data);
-            const { dispatch, information } = this.props;
-            console.log(information);
-            const { curSquads, curName, curIdx, filteredData } = information;
-            dispatch({
-                type: 'information/updateData',
-                curIdx: curIdx,
-                curSquads: curSquads,
-                curName: curName,
-                data: data,
-                id: filteredData[curIdx] ? filteredData[curIdx].id : -1,
-            });
-        }.bind(this));
+        window.onbeforeunload = dispatch({ type: 'information/clear' });    
+        socket.on('update', data => this.handleRealtimeData.bind(this)(data)); 
+        socket.on('infoUpdate', data => this.handleBasicInfo.bind(this)(data));
         dispatch({
             type: 'information/fetchShapeTags'
         });        
+
+    }
+
+    /**
+     * Socket Callback Functions
+     */
+    handleRealtimeData(data) {    
+        console.log(data);
+        const { dispatch, information } = this.props;
+        const { curSquads, curName, curIdx, filteredData, wholeData, memberMap } = information;
+        dispatch({
+            type: 'information/updateData',
+            curIdx: curIdx,
+            curSquads: curSquads,
+            curName: curName,
+            realtime: data,
+            wholeData: wholeData,
+            id: filteredData[curIdx] ? filteredData[curIdx].id : -1,
+            memberMap: memberMap,
+        });  
+    }
+
+    handleBasicInfo(data) {   
+        console.log(data);
+        const { dispatch, information } = this.props;
+        const { curName, curSquads, realtimeBuffer } = information;
+        dispatch({
+            type: 'information/getInfo',
+            wholeData: data,
+            curSquads: curSquads,
+            realtime: realtimeBuffer,
+            curName: curName,
+        });
     }
 
     /**
@@ -84,11 +105,13 @@ class Map extends React.Component {
      *  Data Handling Functions
      */
     fetchData(curSquads) {
-        const { dispatch, information } = this.props;  
+        const { dispatch, information } = this.props;
+        const { wholeData, curName } = information  
         dispatch({
             type: 'information/getData',
             curSquads: curSquads,
-            wholeData: information.wholeData,
+            wholeData: wholeData,
+            curName: curName,
         });
     }
 

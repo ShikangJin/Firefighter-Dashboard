@@ -91,7 +91,7 @@ export default class MapComponent extends React.Component {
             <LoadScript
                 id="script-loader"
                 libraries={libs}
-                googleMapsApiKey={mapAuth.key}
+                // googleMapsApiKey={mapAuth.key}
             >
                 <GoogleMap
                     id='example-map'
