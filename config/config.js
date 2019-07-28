@@ -84,6 +84,11 @@ export default {
       changeOrigin: true,
       pathRewrite: { '^/realServer': '' },
     },
+    '/testServer': {
+      target: 'https://nt83wsfard.execute-api.us-east-1.amazonaws.com/test/',
+      changeOrigin: true,
+      pathRewrite: { '^/testServer': '' },
+    },
   },
   ignoreMomentLocale: true,
   lessLoaderOptions: {

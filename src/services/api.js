@@ -136,6 +136,8 @@ export async function getInfo() {
   return request('/realServer/firefighter/info');
 }
 
+// /testServer/service
+// /realServer/addMember
 export async function addNewMember(params) {
   request(`/realServer/addMember`, {
     method: 'POST',
@@ -146,4 +148,8 @@ export async function addNewMember(params) {
       "pic": params.pic,
     },
   });
+}
+
+export async function fetchProfile() {
+  return request('/testServer/profile');
 }

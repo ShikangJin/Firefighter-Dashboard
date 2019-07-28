@@ -4,7 +4,7 @@ import { OverlayView, Circle, Rectangle, Polygon } from '@react-google-maps/api'
 import ColorPicker from './ColorPicker';
 import styles from './index.less';
 
-const PopWindowContent = ({ removeOverlay, changeFillColor, changeStrokeColor, changeTextColor, fillColor, strokeColor, textColor }) => {
+const PopWindowContent = ({ removeOverlay, changeStrokeColor, changeTextColor, changeFillColor, fillColor, strokeColor, textColor }) => {
     return (
         <div className={styles.popWindow}>
             <Row gutter={16}>
@@ -39,7 +39,7 @@ const PopWindowContent = ({ removeOverlay, changeFillColor, changeStrokeColor, c
     );
 }
 
-const PopWindow = ({ visible, text, handleVisibleChange, removeOverlay, changeFillColor, changeStrokeColor, textColor, changeTextColor, fillColor, strokeColor }) => {
+const PopWindow = ({ visible, text, handleVisibleChange, removeOverlay, changeStrokeColor, textColor, changeTextColor, changeFillColor, fillColor, strokeColor }) => {
     return (
         <Popover
             content={
@@ -66,7 +66,7 @@ const PopWindow = ({ visible, text, handleVisibleChange, removeOverlay, changeFi
 class EditableOverlay extends React.Component {
     state = {
         visible: false,
-        fillColor: 'red',
+        fillColor: 'rgba(255, 255, 255, 0)',
         strokeColor: 'red',
         textColor: 'red',
     };
@@ -90,26 +90,27 @@ class EditableOverlay extends React.Component {
     };
 
     changeFillColor(fillColor) {
-        this.setState({
-            fillColor: fillColor
-        });
+        const { changeOverlayColor, shape } = this.props;
+        shape.fillColor = fillColor;
+        changeOverlayColor();
     }
 
     changeStrokeColor(strokeColor) {
-        this.setState({
-            strokeColor: strokeColor
-        });
+        const { changeOverlayColor, shape } = this.props;
+        shape.strokeColor = strokeColor;
+        changeOverlayColor();
     }
 
     changeTextColor(textColor) {
-        this.setState({
-            textColor: textColor
-        });
+        const { changeOverlayColor, shape } = this.props;
+        shape.textColor = textColor;
+        changeOverlayColor();
     }
 
     render() {
-        const { visible, fillColor, strokeColor, textColor } = this.state;
+        const { visible } = this.state;
         const { removeOverlay, shape, idx } = this.props;
+        const { fillColor, strokeColor, textColor, key, text } = shape;
         if (shape.shape === 'circle') {
             return (
                 <OverlayView
@@ -122,7 +123,7 @@ class EditableOverlay extends React.Component {
                     <React.Fragment>
                         <PopWindow 
                             visible={visible}
-                            text={shape.text} 
+                            text={text} 
                             handleVisibleChange={this.handleVisibleChange.bind(this)}
                             removeOverlay={() => removeOverlay(idx)} 
                             changeFillColor={this.changeFillColor.bind(this)}
@@ -147,7 +148,7 @@ class EditableOverlay extends React.Component {
                     <React.Fragment>
                         <PopWindow 
                             visible={visible}
-                            text={shape.text}
+                            text={text}
                             handleVisibleChange={this.handleVisibleChange.bind(this)}
                             removeOverlay={() => removeOverlay(idx)} 
                             changeFillColor={this.changeFillColor.bind(this)}
@@ -174,7 +175,7 @@ class EditableOverlay extends React.Component {
                     <React.Fragment>
                         <PopWindow 
                             visible={visible}
-                            text={shape.text} 
+                            text={text} 
                             handleVisibleChange={this.handleVisibleChange.bind(this)}
                             removeOverlay={() => removeOverlay(idx)} 
                             changeFillColor={this.changeFillColor.bind(this)}

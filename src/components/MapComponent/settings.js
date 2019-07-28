@@ -1,4 +1,5 @@
-const fillColor = '#ba2727';
+const fillColor = 'rgba(255, 255, 255, 0)';
+const strokeColor = 'red';
 
 const drawingManagerOptions = {
     drawingControl: true,
@@ -8,15 +9,15 @@ const drawingManagerOptions = {
     },
     circleOptions: {
         fillColor: fillColor,
-        strokeColor: fillColor,
+        strokeColor: strokeColor,
     },
     rectangleOptions: {
         fillColor: fillColor,
-        strokeColor: fillColor,
+        strokeColor: strokeColor,
     },
     polygonOptions: {
         fillColor: fillColor,
-        strokeColor: fillColor,
+        strokeColor: strokeColor,
     },
 }
 

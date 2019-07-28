@@ -85,7 +85,7 @@ class TagControlPanel extends React.Component {
                     onVisibleChange={this.handleVisibleChange}
                 >
                     <Tooltip placement="top" title='Add New Tag'>
-                        <Button className={styles.controlBtm}> <Icon type="plus" /> </Button>
+                        <Button className={styles.controlBtm}><Icon type="plus" className={styles.addIcon}/> </Button>
                     </Tooltip>
                 </Popover>
 

@@ -12,13 +12,12 @@ const defaultData = {
     image: '',
     name: '',
     age: 0,
-    bodyTemp: 0,
-    heartRate: 0,
-    coLevel: 0,
-    missionTime: 0,
-    airQuality: 0,
+    humidity: 0, 
+    pressure: 0, 
+    proximity: 0, 
+    temperature: 0,
     timestamp: '',
-    timeDetail: '',
+    // timeDetail: '',
     location: defaultLocation,
 };
 
@@ -44,19 +43,31 @@ class DetailCards extends React.Component {
         return result;
     }
 
+    checkData(data) {
+        if (!data.image) data.image = '';
+        if (!data.name) data.name = '';
+        if (!data.age) data.age = 0;
+        if (!data.humidity) data.humidity = 0;
+        if (!data.pressure) data.pressure = 0;
+        if (!data.proximity) data.proximity = 0;
+        if (!data.temperature) data.temperature = 0;
+        if (!data.timestamp) data.timestamp = '00/00/0000';
+        // if (!data.timeDetail) data.timeDetail = '00:00:00 AM';
+        if (!data.location) data.location = defaultLocation;
+    }
+
     render() {
         let { data, historyData } = this.props;
         if (data === undefined) data = defaultData;
-        if (data.location === undefined) data.location = defaultLocation;
+        else this.checkData(data);
         const { 
             image, 
             name,
             age,
-            bodyTemp,
-            heartRate,
-            coLevel,
-            missionTime,
-            airQuality,
+            humidity, 
+            pressure, 
+            proximity, 
+            temperature,
             timestamp,
             timeDetail,
             location 
@@ -77,12 +88,11 @@ class DetailCards extends React.Component {
                     className={styles.card}
                     hoverable={true}
                     title={'Real-Time Data'}
-                >
-                    <p> {'Body Temperature: ' + bodyTemp} </p>    
-                    <p> {'Heart Rate: ' + heartRate} </p>
-                    <p> {'CO Level: ' + ((coLevel * 100).toFixed(2) + '%')} </p>
-                    <p> {'Mission Time: ' + missionTime + (missionTime <= 1 ? ' min' : ' mins')} </p>
-                    <p> {'Air Quality: ' + (airQuality)} </p>
+                >    
+                    <p> {'Pressure: ' + pressure + ' hPa'} </p>
+                    <p> {'Temperature: ' + temperature + ' °F'} </p>   
+                    <p> {'Humidity: ' + humidity + '%'} </p>
+                    <p> {'Proximity: ' + proximity + ' cm'} </p>
                 </Card>
 
                 <Card 
@@ -90,7 +100,7 @@ class DetailCards extends React.Component {
                     hoverable={true}
                     title={'GPS'}
                 >
-                    <p>{'Time: ' + timestamp + ' ' + timeDetail}</p>
+                    <p>{'Time: ' + timestamp}</p>
                     <p>{'Current Latitude: ' + location.lat}</p>
                     <p>{'Current Longitude: ' + location.lng}</p>
                 </Card>

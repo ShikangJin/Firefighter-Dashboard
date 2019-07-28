@@ -9,14 +9,13 @@ const { Meta } = Card;
 const encodePrefix = 'data:image/svg+xml;charset=UTF-8,';
 
 const MemberCard = ({ data }) => {
-    const { bodyTemp, heartRate, coLevel, airQuality, missionTime } = data;
+    const { humidity, pressure, proximity, temperature } = data;
     return (
         <div>
-            <span>{'Body Temperature: ' + bodyTemp}</span><br/>
-            <span>{'Heart Rate: ' + (heartRate)}</span><br/>
-            <span>{'CO Level: ' + (coLevel * 100).toFixed(2) + '%'}</span><br/>
-            <span>{'Air Quality: ' + (airQuality)}</span><br/> 
-            <span>{'Mission Time: ' + (missionTime + (missionTime <= 1 ? ' min' : ' mins'))}</span><br/>
+            <span>{'Pressure: ' + pressure + ' hPa'}</span><br/>
+            <span>{'Temperature: ' + temperature + ' °F'}</span><br/> 
+            <span>{'Humidity: ' + humidity + '%'}</span><br/>
+            <span>{'Proximity: ' + proximity + ' cm'}</span><br/>
         </div>
     );
 }
@@ -28,7 +27,7 @@ class MarkerGroup extends React.Component {
     }
 
     setIcon(status) {
-        if (status === 'MayDay') 
+        if (status === 'Mayday') 
             return encodePrefix + encodeURIComponent(flashSvg);
         return encodePrefix + encodeURIComponent(normalSvg);
     }
@@ -46,7 +45,7 @@ class MarkerGroup extends React.Component {
             markerArr.push(
                 <Marker
                     key={index}
-                    animation={parentRef._google.maps.Animation.DROP}
+                    // animation={parentRef._google.maps.Animation.DROP}
                     title={name}
                     name={name}
                     position={parsedLocation}
@@ -57,7 +56,7 @@ class MarkerGroup extends React.Component {
                         <InfoWindow 
                             onCloseClick={() => this.setState({ showInfo: -1 })}
                             position={parsedLocation}
-                            options={{ pixelOffset: { height: -50 } }}
+                            options={{ pixelOffset: { height: -30 } }}
                         >
                             <Card hoverable>
                                 <img src={image} alt='pic' className={styles.img} />

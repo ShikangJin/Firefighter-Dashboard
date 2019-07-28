@@ -1,9 +1,8 @@
 function combineRealTimeData(realtime, memberMap) {
     Object.keys(realtime).forEach(id => {
-        console.log(realtime);
         if (realtime[id] !== null) {
             Object.keys(realtime[id]).forEach(realtimeData => {
-                if (realtimeData !== 'squad') {
+                if (realtimeData !== 'squad' && memberMap[id]) {
                     memberMap[id][realtimeData] = realtime[id][realtimeData];
                 }
             })

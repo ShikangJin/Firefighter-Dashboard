@@ -516,6 +516,22 @@
 }
 
 /* 
+  Convert to from  src/components/ControlPanel/index.less
+ */
+.antd-pro-components-control-panel-index-container {
+  position: absolute;
+  z-index: 100;
+  left: 10px;
+  top: 95px;
+  width: 170px;
+  padding: 2px;
+  height: 60%;
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 5px 5px 10px grey;
+}
+
+/* 
   Convert to from  src/components/DescriptionList/index.less
 */
 .antd-pro-components-description-list-index-descriptionList {
@@ -688,6 +704,86 @@
   display: -webkit-box;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+/* 
+  Convert to from  src/components/EnginesOverview/index.less
+ */
+
+.antd-pro-components-engines-overview-index-tab {
+  position: relative;
+  top: -16px;
+  height: 295px;
+
+  .antd-pro-components-engines-overview-index-title {
+    margin: 10px 0;
+    text-align: center;
+  }
+
+  .antd-pro-components-engines-overview-index-list {
+    overflow: scroll;
+    position: relative;
+    height: 75%;
+    width: 95%;
+    margin: auto;
+
+    .antd-pro-components-engines-overview-index-item {
+      display: flex;
+      padding-right: 5px;
+      padding-left: 5px;
+
+      .antd-pro-components-engines-overview-index-name {
+        width: 25%;
+        padding: 0 3px;
+      }
+
+      .antd-pro-components-engines-overview-index-status {
+        width: 30%;
+        padding: 0 3px;
+
+        .antd-pro-components-engines-overview-index-greenDot {
+          width: 8px;
+          height: 8px;
+          border-radius: 10px;
+          background-color: green;
+        }
+
+        .antd-pro-components-engines-overview-index-redDot {
+          width: 8px;
+          height: 8px;
+          border-radius: 10px;
+          background-color: red;
+        }
+
+        .antd-pro-components-engines-overview-index-greyDot {
+          width: 8px;
+          height: 8px;
+          border-radius: 10px;
+          background-color: grey;
+        }
+      }
+
+      .antd-pro-components-engines-overview-index-division {
+        width: 30%;
+        padding: 0 3px;
+      }
+
+      .antd-pro-components-engines-overview-index-check {
+        width: 15%;
+        padding: 0 3px;
+
+        img {
+          width: 85%;
+        }
+      }
+    }
+  }
+
+  .antd-pro-components-engines-overview-index-add {
+    position: relative;
+    left: 80%;
+    top: 5px;
+  }
 }
 
 /* 
@@ -1172,44 +1268,6 @@
 }
 
 /* 
-  Convert to from  src/components/MapComponent/TagControlPanel/index.less
- */
-
-.antd-pro-components-map-component-tag-control-panel-index-container {
-  position: absolute;
-  bottom: 20px;
-  right: 0;
-  left: 0;
-  margin-right: auto;
-  margin-left: auto;
-  width: 210px;
-  display: flex;
-
-  .antd-pro-components-map-component-tag-control-panel-index-controlBtm {
-    width: 30px;
-    padding: 0;
-  }
-
-  .antd-pro-components-map-component-tag-control-panel-index-dropdownBtm {
-    width: 150px;
-    display: flex;
-
-    .antd-pro-components-map-component-tag-control-panel-index-tag {
-      word-wrap: break-word;
-      width: 90%;
-      display: block;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .antd-pro-components-map-component-tag-control-panel-index-icon {
-      width: 10%;
-    }
-  }
-}
-
-/* 
   Convert to from  src/components/NoticeIcon/index.less
  */
 
@@ -1546,6 +1604,44 @@
   @media screen and (max-width: @screen-sm) {
     .antd-pro-components-page-header-wrapper-index-detail {
       display: block;
+    }
+  }
+}
+
+/* 
+  Convert to from  src/components/ResourceManage/index.less
+ */
+
+.antd-pro-components-resource-manage-index-tab {
+  position: relative;
+  top: -16px;
+  height: 295px;
+
+  .antd-pro-components-resource-manage-index-title {
+    margin: 10px 0;
+    text-align: center;
+  }
+
+  .antd-pro-components-resource-manage-index-list {
+    overflow: scroll;
+    position: relative;
+    height: 75%;
+    width: 95%;
+    margin: auto;
+
+    .antd-pro-components-resource-manage-index-item {
+      display: flex;
+      padding-right: 5px;
+      padding-left: 5px;
+
+      .antd-pro-components-resource-manage-index-check {
+        width: 15%;
+        padding: 0 3px;
+
+        img {
+          width: 85%;
+        }
+      }
     }
   }
 }
@@ -1933,6 +2029,50 @@
 }
 
 /* 
+  Convert to from  src/components/TagControlPanel/index.less
+ */
+
+.antd-pro-components-tag-control-panel-index-container {
+  position: absolute;
+  bottom: 15px;
+  right: 0;
+  left: 0;
+  margin-right: auto;
+  margin-left: auto;
+  width: 100%;
+  display: flex;
+
+  .antd-pro-components-tag-control-panel-index-controlBtm {
+    width: 30px;
+    padding: 0;
+    border: none;
+
+    .antd-pro-components-tag-control-panel-index-addIcon {
+      left: 3px;
+      position: relative;
+    }
+  }
+
+  .antd-pro-components-tag-control-panel-index-dropdownBtm {
+    width: 105px;
+    display: flex;
+
+    .antd-pro-components-tag-control-panel-index-tag {
+      word-wrap: break-word;
+      width: 90%;
+      display: block;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .antd-pro-components-tag-control-panel-index-icon {
+      width: 10%;
+    }
+  }
+}
+
+/* 
   Convert to from  src/components/TagSelect/index.less
  */
 .antd-pro-components-tag-select-index-tagSelect {
@@ -2010,11 +2150,11 @@
 
 /* 
   Convert to from  src/components/TimerPanel/index.less
- */
+*/
 
 .antd-pro-components-timer-panel-index-timerPanel {
   position: absolute;
-  z-index: 100;
+  // z-index: 100;
   right: 20%;
   top: 10px;
 

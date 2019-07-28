@@ -1,4 +1,4 @@
-import { fakeFirefighterData, fakeHistoryData, addNewMember, getInfo } from '@/services/api';
+import { fakeFirefighterData, fakeHistoryData, addNewMember, getInfo, fetchProfile } from '@/services/api';
 import { combineRealTimeData, getSquadsData, getFilteredData, getFirstMarker, getMemberMap } from '@/utils/dataHandling';
 
 const shapeTags = ['Fire Boundray', 'Emergency Area'];
@@ -29,6 +29,17 @@ export default {
                 type: 'fetchHistory',          
                 curHistoryData: response,          
             });
+        },
+
+        *fetchInfo(payload, { call, put }) {
+            const response = yield call(fetchProfile);
+            yield put({
+                type: 'setInfo',
+                wholeData: response.data,
+                curSquads: payload.curSquads,
+                realtime: payload.realtime,
+                curName: payload.curName,
+            })
         },
 
         *getInfo(payload, { call, put }) {
@@ -128,6 +139,12 @@ export default {
 
         setInfo(state, action) {
             const { wholeData , curSquads, realtime, curName } = action;
+            // add key to each member
+            Object.keys(wholeData).forEach(squad => {
+                Object.keys(wholeData[squad]).forEach(member => {
+                    wholeData[squad][member].key = wholeData[squad][member].id;
+                })
+            })
             // set member map
             let memberMap = getMemberMap(wholeData);
             // combine realtime data and whole data 

@@ -28,7 +28,7 @@ class TimerPanel extends React.Component {
     render() {
         const stopWatchTitle = (
             <React.Fragment> 
-                <span>Stop Watch</span> 
+                <span>Stopwatch</span> 
                 <Icon 
                     type="close" 
                     onClick={() => this.hide('stopwatch')} 
@@ -38,7 +38,7 @@ class TimerPanel extends React.Component {
         );
         const countDownTitle = (
             <React.Fragment> 
-                <span>Count Down Timer</span> 
+                <span>Countdown Timer</span> 
                 <Icon 
                     type="close" 
                     onClick={() => this.hide('countdown')} 
@@ -55,7 +55,7 @@ class TimerPanel extends React.Component {
                     trigger="click"
                     visible={this.state.stopWatchVisible}
                 >
-                    <Tooltip placement="top" title='Stop Watch'>
+                    <Tooltip placement="top" title='Stopwatch'>
                         <Button 
                             onClick={() => this.handleVisibleChange('stopwatch')} 
                             shape='circle' 
@@ -73,7 +73,7 @@ class TimerPanel extends React.Component {
                     trigger="click"
                     visible={this.state.countDownVisible}
                 >
-                    <Tooltip placement="top" title='Count Down Timer'>
+                    <Tooltip placement="top" title='Countdown Timer'>
                         <Button 
                             onClick={() => this.handleVisibleChange('countdown')} 
                             shape='circle'

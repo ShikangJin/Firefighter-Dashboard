@@ -1,0 +1,75 @@
+.tab {
+    position: relative;
+    top: -16px;
+    height: 295px;
+
+    .title {
+        margin: 10px 0;
+        text-align: center;
+    }
+
+    .list {
+        overflow: scroll;
+        position: relative;
+        height: 75%;
+        width: 95%;
+        margin: auto;
+
+        .item {
+            display:flex;
+            padding-right: 5px;
+            padding-left: 5px;
+
+            .name {
+                width: 25%;
+                padding: 0 3px;
+            }
+
+            .status {
+                width: 30%;
+                padding: 0 3px;
+
+                .greenDot {
+                    width: 8px;
+                    height: 8px;
+                    border-radius: 10px;
+                    background-color: green;
+                }
+
+                .redDot {
+                    width: 8px;
+                    height: 8px;
+                    border-radius: 10px;
+                    background-color: red;
+                }
+
+                .greyDot {
+                    width: 8px;
+                    height: 8px;
+                    border-radius: 10px;
+                    background-color: grey;
+                }
+            }
+
+            .division {
+                width: 30%;
+                padding: 0 3px;
+            }
+
+            .check {
+                width: 15%;
+                padding: 0 3px;
+
+                img {
+                    width: 85%;
+                }
+            }
+        }
+    }
+
+    .add {
+        position: relative;
+        left: 80%;
+        top: 5px;
+    }
+}

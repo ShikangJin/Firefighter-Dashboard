@@ -8,20 +8,20 @@ const MemberTable = React.lazy(() => import('@/components/MemberTable'));
 
 class EngineFinder extends React.Component {
 
-    generateOptions(squads) {
-        const options = [];
-        squads.forEach(squad => {
-            options.push(<Option key={squad}>{squad}</Option>);
-        });
-        return options;
-    }
+    // generateOptions(squads) {
+    //     const options = [];
+    //     squads.forEach(squad => {
+    //         options.push(<Option key={squad}>{squad}</Option>);
+    //     });
+    //     return options;
+    // }
     render() {
         const { squads } = this.props;
 
         return (
             <div>
-                <Card>
-                    <Row glutter={40}>
+                {/* <Card> */}
+                    {/* <Row glutter={40}>
                             <Select
                                 mode="tags"
                                 size="default"
@@ -31,12 +31,13 @@ class EngineFinder extends React.Component {
                             >
                                 {this.generateOptions(squads)}
                             </Select>
-                    </Row>
+                    </Row> */}
                     <Row style={{'marginTop': '15px'}}>
-                        <Search placeholder="input search text" 
-                                    onSearch={value => this.props.nameSearch(value)} 
-                                    enterButton
-                                    style={{'width': '300px'}}
+                        <Search 
+                            placeholder="Member Name Filter" 
+                            onSearch={value => this.props.nameSearch(value)} 
+                            enterButton
+                            style={{'width': '300px'}}
                          />
                     </Row>
                     <Row style={{'marginTop': '30px'}}>
@@ -45,7 +46,7 @@ class EngineFinder extends React.Component {
                         </Suspense>
                         
                     </Row>
-                </Card>
+                {/* </Card> */}
             </div>
         );
     }

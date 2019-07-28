@@ -8,6 +8,7 @@ import AddMemberForm from '@/components/AddMemberForm';
 import EngineFinder from './EngineFinder';
 
 var socket;
+var testSocket;
 
 @connect(({ information, drawer }) => ({
     information, 
@@ -19,13 +20,41 @@ class Map extends React.Component {
         const { dispatch } = this.props;
         socket = openSocket('http://localhost:3000/', { 'forceNew': true })
         // don't need to call disconnect when refreshing page since it will auto trigger disconnect
-        window.onbeforeunload = dispatch({ type: 'information/clear' });    
+        window.onbeforeunload = () => {
+            testSocket.close();
+            dispatch({ type: 'information/clear' });
+        }    
         socket.on('update', data => this.handleRealtimeData.bind(this)(data)); 
         socket.on('infoUpdate', data => this.handleBasicInfo.bind(this)(data));
+        testSocket = new WebSocket('wss://ang6ru9hxa.execute-api.us-east-1.amazonaws.com/test');
+        testSocket.onopen = () => console.log('open');
+        testSocket.onerror = () => console.log('error');
+        testSocket.onmessage = function(e) {
+            console.log(JSON.parse(e.data));
+            let jsonData = JSON.parse(e.data);
+            if (jsonData.type === 'Profile')
+                // this.handleBasicInfo.bind(this)(jsonData.data);
+                console.log(jsonData.data);
+            else if (jsonData.type === 'Realtime') 
+                // this.handleRealtimeData.bind(this)(jsonData.data)
+                console.log(jsonData.data);
+        }.bind(this)
+        testSocket.onclose = () => console.log('close');
+        // this.fetchProfile();
         dispatch({
             type: 'information/fetchShapeTags'
         });        
+    }
 
+    fetchProfile() {
+        const { dispatch, information } = this.props;
+        const { curName, curSquads, realtimeBuffer } = information;
+        dispatch({
+            type: 'information/fetchInfo',
+            curSquads: curSquads,
+            realtime: realtimeBuffer,
+            curName: curName,
+        });
     }
 
     /**
@@ -100,6 +129,22 @@ class Map extends React.Component {
         });
     };
 
+    handleClickEngine = (engine) => {
+        const { dispatch, information } = this.props;  
+        const { curSquads, wholeData, curName } = information;
+        let newSquads = [...curSquads];
+        let containIdx = newSquads.indexOf(engine);
+        if (containIdx > -1) 
+            newSquads.splice(containIdx, 1);
+        else 
+            newSquads.unshift(engine);
+        dispatch({
+            type: 'information/getData',
+            curSquads: newSquads,
+            wholeData: wholeData,
+            curName: curName,
+        });      
+    }   
 
     /**
      *  Data Handling Functions
@@ -156,18 +201,19 @@ class Map extends React.Component {
         const { dispatch } = this.props;
         // must call disconnect here to remove callback function at server side 
         socket.disconnect(true);
+        testSocket.close();
         dispatch({ type: 'information/clear' });
     }
 
     render() {
         const { information, drawer } = this.props;
-        const { data, filteredData, wholeData, firstmarker, shapeTags, curHistoryData, center } = information;
+        const { data, filteredData, wholeData, firstmarker, shapeTags, curHistoryData, center, curSquads } = information;
         const { visible, childDrawer, curIdx, formDrawer } = drawer;
         console.log(information);
         return (
             <React.Fragment>    
                 <Drawer
-                    title="Engines Searching Panel"
+                    title="Members Table"
                     width={520}
                     closable={false}
                     onClose={() => this.setDrawer(false)}
@@ -176,17 +222,17 @@ class Map extends React.Component {
                     <EngineFinder 
                         nameClick={this.openChildDrawer.bind(this)} 
                         data={filteredData}
-                        fetchData={this.fetchData.bind(this)}
+                        // fetchData={this.fetchData.bind(this)}
                         nameSearch={this.nameSearch.bind(this)}
                         squads={wholeData === undefined ? [] : Object.keys(wholeData)}
                     />
 
-                    <Button 
+                    {/* <Button 
                         type="primary" 
                         onClick={() => this.setFormDrawer(true)} 
                         style={{'marginTop': 12}}> 
                         Add Member
-                    </Button>
+                    </Button> */}
 
                     <Drawer
                         title="Member Information"
@@ -196,27 +242,31 @@ class Map extends React.Component {
                         visible={childDrawer}
                     >            
                         <DetailCards data={filteredData[curIdx]} historyData={curHistoryData}/>  
-                    </Drawer>
-
-                    <Drawer
+                    </Drawer>      
+                </Drawer>
+                
+                <Drawer
                         title="Add Member"
                         width={320}
                         closable={false}
                         onClose={() => this.setFormDrawer(false)}
                         visible={formDrawer}
                     >
-                        <AddMemberForm addMember={this.addMember.bind(this)}/>
-                    </Drawer>
+                    <AddMemberForm addMember={this.addMember.bind(this)}/>
                 </Drawer>
-                
+
                 <MapComponent 
                     filteredData={filteredData} 
+                    wholeData={wholeData}
                     center={center}
                     setDrawer={this.setDrawer.bind(this)}
                     firstmarker={firstmarker}
                     tags={shapeTags}
                     addShapeTag={this.addShapeTag.bind(this)}
                     deleteShapeTag={this.deleteShapeTag.bind(this)}
+                    handleClickEngine={this.handleClickEngine.bind(this)}
+                    handleClickAdd={this.setFormDrawer.bind(this)}
+                    curSquads={curSquads}
                 />
 
             </React.Fragment>

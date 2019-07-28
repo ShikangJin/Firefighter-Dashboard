@@ -3,6 +3,16 @@ import { Table, Divider, Tag, Modal } from 'antd';
 
 var columns = [];
 
+function pickColor(status) {
+    switch(status) {
+        case 'good': return 'green';
+        case 'Good': return 'green';
+        case 'unknown': return 'grey';
+        case 'Mayday': return 'red';
+        default: return 'grey';
+    }
+}
+
 class MemberTable extends React.Component {
 
     componentWillMount() {
@@ -29,9 +39,8 @@ class MemberTable extends React.Component {
                 key: 'status',
                 dataIndex: 'status',
                 render: status => {
-                    let color = status === 'good' ? 'green' : 'red';
                     return (
-                        <Tag color={color} key={status}>
+                        <Tag color={pickColor(status)} key={status}>
                             {status.toUpperCase()}
                         </Tag>
                     );
