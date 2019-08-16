@@ -13,7 +13,7 @@ const MemberCard = ({ data }) => {
     return (
         <div>
             <span>{'Pressure: ' + pressure + ' hPa'}</span><br/>
-            <span>{'Temperature: ' + temperature + ' °F'}</span><br/> 
+            <span>{'Temperature: ' + temperature + ' °C'}</span><br/> 
             <span>{'Humidity: ' + humidity + '%'}</span><br/>
             <span>{'Proximity: ' + proximity + ' cm'}</span><br/>
         </div>

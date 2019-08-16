@@ -64,9 +64,9 @@ class EnginesOverview extends React.Component {
                                     {generateStatusGraph(item.members)}
                                 </Button>
 
-                                <div className={styles.division}>
+                                {/* <div className={styles.division}>
                                     <span>Div</span>    
-                                </div>
+                                </div> */}
                                             
                             </List.Item>}
                     />

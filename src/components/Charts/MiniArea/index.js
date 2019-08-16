@@ -5,6 +5,12 @@ import styles from '../index.less';
 
 @autoHeight()
 class MiniArea extends React.PureComponent {
+
+  componentWillReceiveProps(nextProps) {
+    console.log(nextProps);
+    return true;
+  }
+
   render() {
     const {
       height,

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { Drawer, Button } from 'antd';
 import { connect } from 'dva';
 import openSocket from 'socket.io-client';
@@ -10,6 +10,8 @@ import EngineFinder from './EngineFinder';
 var socket;
 var testSocket;
 
+// const DetailCards =  React.lazy(() => import('@/components/DetailCards'));
+
 @connect(({ information, drawer }) => ({
     information, 
     drawer,
@@ -18,32 +20,64 @@ class Map extends React.Component {
 
     componentDidMount() {   
         const { dispatch } = this.props;
-        socket = openSocket('http://localhost:3000/', { 'forceNew': true })
+       
         // don't need to call disconnect when refreshing page since it will auto trigger disconnect
         window.onbeforeunload = () => {
             testSocket.close();
             dispatch({ type: 'information/clear' });
         }    
-        socket.on('update', data => this.handleRealtimeData.bind(this)(data)); 
-        socket.on('infoUpdate', data => this.handleBasicInfo.bind(this)(data));
-        testSocket = new WebSocket('wss://ang6ru9hxa.execute-api.us-east-1.amazonaws.com/test');
-        testSocket.onopen = () => console.log('open');
-        testSocket.onerror = () => console.log('error');
-        testSocket.onmessage = function(e) {
-            console.log(JSON.parse(e.data));
-            let jsonData = JSON.parse(e.data);
-            if (jsonData.type === 'Profile')
-                // this.handleBasicInfo.bind(this)(jsonData.data);
-                console.log(jsonData.data);
-            else if (jsonData.type === 'Realtime') 
-                // this.handleRealtimeData.bind(this)(jsonData.data)
-                console.log(jsonData.data);
-        }.bind(this)
-        testSocket.onclose = () => console.log('close');
-        // this.fetchProfile();
+       
+        this.initGCPPipeline();
+        // this.initAWSPipeline();
+        
         dispatch({
             type: 'information/fetchShapeTags'
         });        
+    }
+
+    initGCPPipeline() {
+        socket = openSocket('http://localhost:3000/', { 'forceNew': true })
+        socket.on('update', data => this.handleRealtimeData.bind(this)(data)); 
+        socket.on('infoUpdate', data => this.handleBasicInfo.bind(this)(data));
+    }
+
+    initAWSPipeline() {
+        // wss://ang6ru9hxa.execute-api.us-east-1.amazonaws.com/test
+        testSocket = new WebSocket('ws://10.250.21.73:8005/ws');
+        testSocket.onopen = () => console.log('open');
+        testSocket.onerror = () => console.log('error');
+        testSocket.onmessage = function(e) {
+            console.log(e);
+            console.log(e.data);
+            let jsonData = JSON.parse(JSON.parse(e.data));
+            console.log(jsonData);
+            if (jsonData.Type === 'Profile') {
+                let parsedJson = this.parseAWSData(jsonData.Data);
+                this.handleBasicInfo.bind(this)(parsedJson);
+            }
+           
+            else if (jsonData.Type === 'RealTime') 
+                // this.handleRealtimeData.bind(this)(jsonData.data)
+                console.log(jsonData.Data);
+        }.bind(this)
+        testSocket.onclose = () => console.log('close');
+        // this.fetchProfile();
+    }
+
+    parseAWSData(data) {
+        let resultData = {};
+        data.forEach(engine => {
+            let key = Object.keys(engine)[0];
+            let originArr = [...engine[key]];
+            engine[key] = {};
+            originArr.forEach(member => {
+                let memberKey = Object.keys(member)[0];
+                engine[key][memberKey] = member[memberKey];
+            });
+            resultData[key] = engine[key];
+        });
+        console.log(resultData);
+        return resultData;
     }
 
     fetchProfile() {
@@ -62,8 +96,9 @@ class Map extends React.Component {
      */
     handleRealtimeData(data) {    
         console.log(data);
-        const { dispatch, information } = this.props;
-        const { curSquads, curName, curIdx, filteredData, wholeData, memberMap } = information;
+        const { dispatch, information, drawer } = this.props;
+        const { curSquads, curName, filteredData, wholeData, memberMap } = information;
+        const { curIdx } = drawer; 
         dispatch({
             type: 'information/updateData',
             curIdx: curIdx,
@@ -109,6 +144,7 @@ class Map extends React.Component {
     };
 
     openChildDrawer = (index) => {
+        // clearInterval(this._interval);
         const { dispatch, information } = this.props;  
         dispatch({
             type: 'drawer/infoDrawer',
@@ -118,7 +154,12 @@ class Map extends React.Component {
         dispatch({
             type: 'information/getHistory',
             id: information.filteredData[index].id,
-        });
+        })
+        // let interval = setInterval(() => dispatch({
+        //     type: 'information/getHistory',
+        //     id: information.filteredData[index].id,
+        // }), 10000);
+        // this._interval = interval;
     };
 
     closeChildDrawer = () => {
@@ -127,6 +168,7 @@ class Map extends React.Component {
             type: 'drawer/infoDrawer',
             childDrawer: false,
         });
+        clearInterval(this._interval);
     };
 
     handleClickEngine = (engine) => {
@@ -200,8 +242,8 @@ class Map extends React.Component {
     componentWillUnmount() {
         const { dispatch } = this.props;
         // must call disconnect here to remove callback function at server side 
-        socket.disconnect(true);
-        testSocket.close();
+        if (socket) socket.disconnect(true);
+        if (testSocket) testSocket.close();
         dispatch({ type: 'information/clear' });
     }
 
@@ -240,8 +282,10 @@ class Map extends React.Component {
                         closable={false}
                         onClose={this.closeChildDrawer}
                         visible={childDrawer}
-                    >            
-                        <DetailCards data={filteredData[curIdx]} historyData={curHistoryData}/>  
+                    >          
+                        
+                        <DetailCards data={filteredData[curIdx]} historyData={curHistoryData}/>
+                               
                     </Drawer>      
                 </Drawer>
                 

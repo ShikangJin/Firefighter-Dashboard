@@ -21,11 +21,18 @@ const defaultData = {
     location: defaultLocation,
 };
 
+var minTemp = 100, maxTemp = -100;
+
 class DetailCards extends React.Component {
 
+    componentWillReceiveProps(nextProps) {
+        console.log(nextProps);
+        return true;
+    }
+
     parseData(historyData, type) {
-        if (historyData.length === 0) {
-            return historyData;
+        if (!historyData || historyData.length === 0) {
+            return [];
         }
         const result = [];
         historyData.forEach(data => {
@@ -33,6 +40,7 @@ class DetailCards extends React.Component {
             switch(type) {
                 case 'bodyTemp': yData = data.bodyTemp; break;
                 case 'heartRate': yData = data.heartRate; break;
+                case 'temp': {yData = data.temp ? data.temp : 0; minTemp=Math.min(minTemp,yData); maxTemp=Math.max(maxTemp,yData)}; break;
                 default: yData = 0; break;
             }
             result.push({
@@ -90,7 +98,7 @@ class DetailCards extends React.Component {
                     title={'Real-Time Data'}
                 >    
                     <p> {'Pressure: ' + pressure + ' hPa'} </p>
-                    <p> {'Temperature: ' + temperature + ' °F'} </p>   
+                    <p> {'Temperature: ' + temperature + ' °C'} </p>   
                     <p> {'Humidity: ' + humidity + '%'} </p>
                     <p> {'Proximity: ' + proximity + ' cm'} </p>
                 </Card>
@@ -104,7 +112,19 @@ class DetailCards extends React.Component {
                     <p>{'Current Latitude: ' + location.lat}</p>
                     <p>{'Current Longitude: ' + location.lng}</p>
                 </Card>
+
                 <Card 
+                    className={styles.card}
+                    hoverable={true}
+                    title={'History Temperature'}
+                >
+                    <LineChart 
+                        color="#f2a521" 
+                        data={this.parseData(historyData, 'temp')}
+                        scale={{ y: { min: minTemp - 5, max: maxTemp + 5 } }}
+                    />
+                </Card>
+                {/* <Card 
                     className={styles.card}
                     hoverable={true}
                     title={'History Body Temperature'}
@@ -125,7 +145,7 @@ class DetailCards extends React.Component {
                         scale={{ y: { min: 50, max: 110 } }}
                         color='#db3830'
                     />
-                </Card>
+                </Card> */}
             </React.Fragment>
         );
     }

@@ -1,5 +1,6 @@
 import { fakeFirefighterData, fakeHistoryData, addNewMember, getInfo, fetchProfile } from '@/services/api';
 import { combineRealTimeData, getSquadsData, getFilteredData, getFirstMarker, getMemberMap } from '@/utils/dataHandling';
+import { defaultCenter } from '@/defaultSettings';
 
 const shapeTags = ['Fire Boundray', 'Emergency Area'];
 
@@ -12,10 +13,7 @@ export default {
         data: [],
         wholeData: {},
         filteredData: [],
-        center: {
-            lat: -3.745,
-            lng: -38.523
-        },
+        center: defaultCenter,
         firstmarker: null,
         curHistoryData: [],
         shapeTags: [],
@@ -60,6 +58,7 @@ export default {
         },
 
         *updateData(payload, { call, put }) {
+            console.log(payload.id);
             const response = yield call(fakeHistoryData, payload.id);
             if (Object.keys(payload.wholeData).length === 0) {
                 yield put({
@@ -279,7 +278,6 @@ export default {
                     lng: -38.523
                 },
                 firstmarker: null,
-                curHistoryData: [],
             }
         }
     },
