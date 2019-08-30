@@ -2,24 +2,7 @@ import React from 'react';
 import { Card } from 'antd';
 import { MiniArea, LineChart } from '@/components/Charts';
 import styles from './index.less';
-
-const defaultLocation = {
-    lat: 0,
-    lng: 0,
-};
-
-const defaultData = {
-    image: '',
-    name: '',
-    age: 0,
-    humidity: 0, 
-    pressure: 0, 
-    proximity: 0, 
-    temperature: 0,
-    timestamp: '',
-    // timeDetail: '',
-    location: defaultLocation,
-};
+import { defaultData } from '@/defaultSettings';
 
 var minTemp = 100, maxTemp = -100;
 
@@ -61,7 +44,11 @@ class DetailCards extends React.Component {
         if (!data.temperature) data.temperature = 0;
         if (!data.timestamp) data.timestamp = '00/00/0000';
         // if (!data.timeDetail) data.timeDetail = '00:00:00 AM';
-        if (!data.location) data.location = defaultLocation;
+        if (!data.location) data.location = {lat: 0, lng: 0};
+        if (!data.ppb) data.ppb = 0;
+        if (!data.rh) data.rh = 0;
+        if (!data.acc) data.acc = {x: 0, y: 0, z: 0};
+        if (!data.gyro) data.gyro = {x: 0, y: 0, z: 0};
     }
 
     render() {
@@ -78,7 +65,11 @@ class DetailCards extends React.Component {
             temperature,
             timestamp,
             timeDetail,
-            location 
+            location,
+            ppb,
+            rh,
+            acc,
+            gyro,
         } = data;
         return (
             <React.Fragment>
@@ -101,6 +92,10 @@ class DetailCards extends React.Component {
                     <p> {'Temperature: ' + temperature + ' °C'} </p>   
                     <p> {'Humidity: ' + humidity + '%'} </p>
                     <p> {'Proximity: ' + proximity + ' cm'} </p>
+                    <p> {'PPB: ' + ppb} </p>
+                    <p> {'RH: ' + rh} </p>
+                    <p> {`Accelerometer: (${acc.x}, ${acc.y}, ${acc.z})`} </p>
+                    <p> {`Gyroscope: (${gyro.x}, ${gyro.y}, ${gyro.z})`} </p>
                 </Card>
 
                 <Card 
@@ -124,28 +119,6 @@ class DetailCards extends React.Component {
                         scale={{ y: { min: minTemp - 5, max: maxTemp + 5 } }}
                     />
                 </Card>
-                {/* <Card 
-                    className={styles.card}
-                    hoverable={true}
-                    title={'History Body Temperature'}
-                >
-                    <MiniArea 
-                        color="#f2a521" 
-                        data={this.parseData(historyData, 'bodyTemp')}
-                        scale={{ y: { min: 35, max: 39 } }}
-                    />
-                </Card>
-                <Card 
-                    className={styles.card}
-                    hoverable={true}
-                    title={'History Heart Rate'}
-                >
-                    <LineChart 
-                        data={this.parseData(historyData, 'heartRate')}
-                        scale={{ y: { min: 50, max: 110 } }}
-                        color='#db3830'
-                    />
-                </Card> */}
             </React.Fragment>
         );
     }

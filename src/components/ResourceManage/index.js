@@ -31,7 +31,7 @@ class ResourceManage extends React.Component {
                 <div className={styles.list}>
                     <List
                         size="small"
-                        bordered
+                        // bordered
                         dataSource={overlay}
                         renderItem={item => 
                             <List.Item className={styles.item}>

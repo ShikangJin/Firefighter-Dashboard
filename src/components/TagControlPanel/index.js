@@ -19,7 +19,12 @@ class TagControlPanel extends React.Component {
             );
         });
         return (
-            <Menu onClick={(e) => {this.props.setSelectedTag({shapeTag: e.key, idx: e.item.props.id})}}>
+            <Menu onClick={e => {
+                // const tag = {shapeTag: e.key, idx: e.item.props.id};
+                localStorage.setItem('tag',  e.key)
+                this.props.setSelectedTag({shapeTag: e.key, idx: e.item.props.id});
+                }}
+            >
                 {items}
             </Menu>
         );

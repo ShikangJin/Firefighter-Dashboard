@@ -520,15 +520,16 @@
  */
 .antd-pro-components-control-panel-index-container {
   position: absolute;
-  z-index: 100;
+  z-index: 1;
   left: 10px;
   top: 95px;
   width: 170px;
   padding: 2px;
-  height: 63%;
+  max-height: 63%;
   background-color: white;
   border-radius: 5px;
   box-shadow: 5px 5px 10px grey;
+  overflow: scroll;
 }
 
 /* 
@@ -726,6 +727,10 @@
     height: 75%;
     width: 95%;
     margin: auto;
+
+    .antd-pro-components-engines-overview-index-listTitle {
+      margin: 0 17px;
+    }
 
     .antd-pro-components-engines-overview-index-item {
       display: flex;
@@ -1262,10 +1267,15 @@
 /* 
   Convert to from  src/components/MapComponent/MarkerGroup/index.less
  */
+
 .antd-pro-components-map-component-marker-group-index-img {
   width: 160px;
   position: relative;
   margin-bottom: 12px;
+}
+
+.antd-pro-components-map-component-marker-group-index-memberCard {
+  max-width: 150px;
 }
 
 /* 
@@ -1626,7 +1636,7 @@
   .antd-pro-components-resource-manage-index-list {
     overflow: scroll;
     position: relative;
-    height: 75%;
+    height: 65%;
     width: 95%;
     margin: auto;
 
@@ -1634,6 +1644,7 @@
       display: flex;
       padding-right: 5px;
       padding-left: 5px;
+      cursor: pointer;
 
       .antd-pro-components-resource-manage-index-check {
         width: 15%;
@@ -2034,8 +2045,8 @@
  */
 
 .antd-pro-components-tag-control-panel-index-container {
-  position: absolute;
-  bottom: 15px;
+  position: relative;
+  bottom: -30px;
   right: 0;
   left: 0;
   margin-right: auto;
@@ -2065,10 +2076,12 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      line-height: 29px;
     }
 
     .antd-pro-components-tag-control-panel-index-icon {
       width: 10%;
+      line-height: 32px;
     }
   }
 }
@@ -2158,9 +2171,17 @@
   // z-index: 100;
   right: 20%;
   top: 10px;
+  background-color: white;
+  border: 1px solid lightgray;
+  padding: 3px;
 
-  .antd-pro-components-timer-panel-index-stopWatchButton {
-    margin-right: 10px;
+  .antd-pro-components-timer-panel-index-iconButton {
+    color: black;
+  }
+
+  .antd-pro-components-timer-panel-index-timePanelDivider {
+    height: 25px;
+    margin: 0 5px;
   }
 }
 

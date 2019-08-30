@@ -27,7 +27,8 @@ export default class MapComponent extends React.Component {
 
     constructor(props) {
         super(props);
-        this.selectedPoly = null;
+        this.selectedPoly = null;   
+        localStorage.setItem('tag', props.tags && props.tags[0] ? props.tags[0].shapeTag : '');
     }
 
     componentWillReceiveProps(nextProps) {
@@ -35,8 +36,10 @@ export default class MapComponent extends React.Component {
             let latlng = new this._google.maps.LatLng(parseFloat(nextProps.firstmarker.lat), parseFloat(nextProps.firstmarker.lng));
             this.mapRef.panTo(latlng);
         }  
+        const prevTag = localStorage.getItem('tag');
+        const curTag = nextProps.tags.find(tag => tag.shapeTag === prevTag) || ((nextProps.tags && nextProps.tags[0]) ? nextProps.tags[0] : {shapeTag: 'Please Select Tag', idx: -1});
         this.setState({
-            selectedTag: (nextProps.tags && nextProps.tags[0]) ? nextProps.tags[0] : {shapeTag: 'Please Select Tag', idx: -1},
+            selectedTag: curTag,
         }); 
     }
 

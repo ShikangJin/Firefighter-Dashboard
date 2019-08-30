@@ -164,7 +164,11 @@ class EditableOverlay extends React.Component {
                 </OverlayView>
             );
         } else if (shape.shape === 'poly') {
-            let paths = shape.paths.getArray()[0].j;
+            let paths = shape.paths.getArray()[0].g;
+            if (typeof(paths) === 'function') {
+                console.log('google map api may update the method to get polygon shape path. please update the code');
+                return;
+            }
             let polyCenter = this.calPolyCenter(paths);
             return (
                 <OverlayView

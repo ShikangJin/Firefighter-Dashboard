@@ -3,19 +3,42 @@ import { Card } from 'antd';
 import { Marker, InfoWindow } from '@react-google-maps/api';
 import { flashSvg, normalSvg } from  './iconTemplate';
 import styles from './index.less';
+import { defaultData } from '@/defaultSettings';
 
 const { Meta } = Card;
 
 const encodePrefix = 'data:image/svg+xml;charset=UTF-8,';
 
+function checkData(data) {
+    if (!data.image) data.image = '';
+    if (!data.name) data.name = '';
+    if (!data.age) data.age = 0;
+    if (!data.humidity) data.humidity = 0;
+    if (!data.pressure) data.pressure = 0;
+    if (!data.proximity) data.proximity = 0;
+    if (!data.temperature) data.temperature = 0;
+    if (!data.timestamp) data.timestamp = '00/00/0000';
+    // if (!data.timeDetail) data.timeDetail = '00:00:00 AM';
+    if (!data.location) data.location = {lat: 0, lng: 0};
+    if (!data.ppb) data.ppb = 0;
+    if (!data.rh) data.rh = 0;
+    if (!data.acc) data.acc = {x: 0, y: 0, z: 0};
+    if (!data.gyro) data.gyro = {x: 0, y: 0, z: 0};
+}
+
 const MemberCard = ({ data }) => {
-    const { humidity, pressure, proximity, temperature } = data;
+    checkData(data);
+    const { humidity, pressure, proximity, temperature, ppb, rh, acc, gyro } = data;
     return (
-        <div>
+        <div className={styles.memberCard}>
             <span>{'Pressure: ' + pressure + ' hPa'}</span><br/>
             <span>{'Temperature: ' + temperature + ' °C'}</span><br/> 
             <span>{'Humidity: ' + humidity + '%'}</span><br/>
             <span>{'Proximity: ' + proximity + ' cm'}</span><br/>
+            <span>{'PPB: ' + ppb}</span><br/>
+            <span>{'RH: ' + rh}</span><br/>
+            <span> {`Accelerometer: (${acc.x}, ${acc.y}, ${acc.z})`} </span><br/>
+            <span> {`Gyroscope: (${gyro.x}, ${gyro.y}, ${gyro.z})`} </span><br/>
         </div>
     );
 }

@@ -20,6 +20,7 @@ export function _onCreate() {
   });
   
   app.model({ namespace: 'global', ...(require('/Users/skjin/firefighter-dashboard/src/models/global.js').default) });
+app.model({ namespace: 'information', ...(require('/Users/skjin/firefighter-dashboard/src/models/information.js').default) });
 app.model({ namespace: 'list', ...(require('/Users/skjin/firefighter-dashboard/src/models/list.js').default) });
 app.model({ namespace: 'login', ...(require('/Users/skjin/firefighter-dashboard/src/models/login.js').default) });
 app.model({ namespace: 'menu', ...(require('/Users/skjin/firefighter-dashboard/src/models/menu.js').default) });

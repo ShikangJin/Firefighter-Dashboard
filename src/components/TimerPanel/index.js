@@ -1,5 +1,5 @@
 import React from 'react';
-import { Popover, Button, Icon, Tooltip } from 'antd';
+import { Popover, Button, Icon, Tooltip, Divider } from 'antd';
 import StopWatch from './StopWatch.js';
 import CountdownTimer from './CountdownTimer.js';
 import styles from './index.less';
@@ -59,14 +59,15 @@ class TimerPanel extends React.Component {
                         <Button 
                             onClick={() => this.handleVisibleChange('stopwatch')} 
                             shape='circle' 
-                            className={styles.stopWatchButton} 
+                            className={styles.iconButton} 
+                            type='link'
                         >
                             <Icon type="clock-circle" theme="filled" />
                         </Button>
                     </Tooltip>
                     
                 </Popover>
-                
+                <Divider type='vertical' className={styles.timePanelDivider} />
                 <Popover
                     content={<CountdownTimer />}  // Countdown Timer is Under Construction
                     title={countDownTitle}
@@ -77,8 +78,10 @@ class TimerPanel extends React.Component {
                         <Button 
                             onClick={() => this.handleVisibleChange('countdown')} 
                             shape='circle'
+                            type='link'
+                            className={styles.iconButton} 
                         >
-                            <Icon type="clock-circle" theme="filled" />
+                            <Icon type="clock-circle" />
                         </Button>
                     </Tooltip>
                 </Popover>

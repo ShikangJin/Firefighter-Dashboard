@@ -48,8 +48,20 @@ class EnginesOverview extends React.Component {
                 <div className={styles.list}>
                     <List
                         size="small"
-                        bordered
+                        // bordered
                         dataSource={dataProcessing(wholeData)}
+                        header={
+                            <div>
+                                {/* <Tooltip placement="top" title='Engine name'>
+                                    <Icon type="team" />
+                                </Tooltip> */}
+                                {/* <Tooltip placement="top" title='Member Status'>
+                                    <Icon type="heart" />
+                                </Tooltip> */}
+                                <span className={styles.listTitle}>Engine</span>
+                                <span>Status</span>
+                            </div>
+                        }
                         renderItem={item => 
                             <List.Item className={styles.item}>
                                 <div className={styles.check}>

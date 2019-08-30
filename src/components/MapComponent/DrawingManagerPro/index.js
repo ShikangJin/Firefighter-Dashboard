@@ -50,7 +50,7 @@ class DrawingManagerPro extends React.Component {
         return (
             <React.Fragment>
                 <div className={styles.controlPanel}>
-                    <Tooltip placement="top" title='Cancle Shape'>
+                    <Tooltip placement="top" title='Cancel Shape'>
                         <Button 
                             shape='circle' 
                             onClick={() => this.deletePoly(parentRef)} 

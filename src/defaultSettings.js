@@ -1,3 +1,21 @@
+const defaultLocation = {
+  lat: 0,
+  lng: 0,
+};
+
+const defaultAcc = {
+  x: 0,
+  y: 0,
+  z: 0,
+};
+
+const defaultGyro = {
+  x: 0,
+  y: 0,
+  z: 0,
+};
+
+
 module.exports = {
   navTheme: 'dark', // theme for nav menu
   primaryColor: '#1890FF', // primary color of ant design
@@ -19,5 +37,21 @@ module.exports = {
   defaultCenter: {
     lat: -3.745,
     lng: -38.523
-  }
+  },
+ defaultData: {
+    image: '',
+    name: '',
+    age: 0,
+    humidity: 0, 
+    pressure: 0, 
+    proximity: 0, 
+    temperature: 0,
+    timestamp: '',
+    ppb: 0,
+    rh: 0,
+    acc: defaultAcc,
+    gyro: defaultGyro,
+    // timeDetail: '',
+    location: defaultLocation,
+  },
 };
